@@ -51,7 +51,10 @@ conventions.
   differ and fixed otherwise, and ANSI type A or B connection.
 - `tap_ratio`, `tap_ratio_min`, `tap_ratio_max`, `r_neutral_from`,
   `x_neutral_from`, `r_neutral_to`, `x_neutral_to`, `g_no_load`, `b_no_load` on
-  the two-winding transformer subtypes.
+  the two-winding transformer subtypes. A two-winding `tap_ratio` is a
+  multiplier on the nameplate turns ratio `v_nom_from / v_nom_to`, since that
+  subtype has a nameplate ratio to multiply; a regulator's `tap_ratio` is a
+  regulation ratio, since it has none.
 
 ### Added, new in this proposal
 
