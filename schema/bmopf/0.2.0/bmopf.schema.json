@@ -347,7 +347,7 @@
             "items": {
               "type": "number"
             },
-            "description": "Linear active-power cost [$/kWh] of each phase conductor of the source, one entry per phase conductor in `terminal_map` order. The source is not special in the objective: a positive injection is an import, so a positive entry is the import price and an export is credited at the same price. A scalar is rejected. Absent, the source carries no objective term. Legacy spelling accepted for compatibility with earlier drafts. Fresh output uses energy_cost_rate. For voltage sources this legacy array excludes neutral terminals; conversion inserts zero rates for those terminals.",
+            "description": "Linear active-power cost [$/kWh] of each phase conductor of the source, one entry per phase conductor in `terminal_map` order. The source is not special in the objective: a positive injection is an import, so a positive entry is the import price and an export is credited at the same price. A scalar is rejected. Absent, the source carries no objective term. Legacy spelling accepted for compatibility with earlier drafts. Fresh output uses energy_cost_rate.",
             "deprecated": true
           },
           "p_min": {
@@ -369,7 +369,7 @@
             "items": {
               "type": "number"
             },
-            "description": "Energy cost rate [$/kWh], one entry per terminal in terminal_map order, including an explicit neutral terminal when present. The objective multiplies terminal active-power injection in watts by this rate and by the declared duration in hours, divided by 1000. Positive injection supplies the network."
+            "description": "Energy cost rate [$/kWh], one entry per phase conductor in terminal_map order. Neutral terminals have no price entry."
           }
         },
         "required": [
@@ -643,7 +643,7 @@
             "items": {
               "type": "number"
             },
-            "description": "Energy cost rate [$/kWh], one entry per phase conductor in terminal_map order. The objective multiplies phase active-power injection in watts by this rate and by the declared duration in hours, divided by 1000."
+            "description": "Energy cost rate [$/kWh], one entry per phase conductor in terminal_map order. Neutral terminals have no price entry."
           }
         },
         "required": [
@@ -1045,7 +1045,7 @@
             "items": {
               "type": "number"
             },
-            "description": "Energy cost rate [$/kWh], one entry per phase conductor in terminal_map order. The objective multiplies phase active-power injection in watts by this rate and by the declared duration in hours, divided by 1000."
+            "description": "Energy cost rate [$/kWh], one entry per phase conductor in terminal_map order. Neutral terminals have no price entry."
           }
         },
         "required": [

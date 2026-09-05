@@ -89,10 +89,10 @@ class SemanticContract(unittest.TestCase):
         del generator["energy_cost_rate"]
         self.assertFalse(jsonschema.Draft202012Validator(schema).is_valid(self.case))
 
-    def test_source_prices_follow_terminal_order(self):
+    def test_source_prices_follow_phase_order(self):
         source = next(iter(self.case["voltage_source"].values()))
         source["cost"] = [1, 2, 3]
-        source["energy_cost_rate"] = [1.0, 2.0, 3.0, 0.0]
+        source["energy_cost_rate"] = [1.0, 2.0, 3.0]
         self.assertEqual(validate(self.case), [])
         source["energy_cost_rate"][-1] = 4
         self.assertIn("BMOPF.COST_ALIAS", {f.code for f in validate(self.case)})

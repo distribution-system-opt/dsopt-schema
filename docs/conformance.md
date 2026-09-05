@@ -129,11 +129,11 @@ ledger; unrelated round-trip losses remain explicit.
 Draft BMOPF 0.2 accepts `energy_cost_rate` and the deprecated `cost` spelling.
 The required generator price remains required: either spelling satisfies it.
 Rates remain $/kWh; no existing coefficient receives a numerical rescaling.
-A source's legacy phase vector expands into its terminal map with zero at
-nonphase positions. Conflicting spellings and incorrect vector lengths are
+Source prices follow phase order, matching Matt Deakin's source page;
+neutral terminals have no price entry. Conflicting spellings and incorrect vector lengths are
 semantic errors. Fresh draft output uses the proposed name.
 
-PowerIO's `energy_costs_keep_terminal_order_through_mutation_ir_and_schema_conversion`
+PowerIO's `energy_costs_keep_phase_order_through_mutation_ir_and_schema_conversion`
 test changes a source price, serializes the network to IR, and checks both 0.1.0
 and draft output. C tests read the borrowed price span after the module handle
 is freed; Julia checks the vector after IR restoration and garbage collection.
