@@ -3,6 +3,7 @@ import copy
 import hashlib
 import json
 import unittest
+import jsonschema
 from pathlib import Path
 from semantics import validate
 
@@ -75,6 +76,29 @@ class SemanticContract(unittest.TestCase):
         self.assertEqual(validate(self.case), [])
         t["g_no_load"] = 0
         self.assertIn("BMOPF.AMBIGUOUS", {f.code for f in validate(self.case)})
+
+    def test_generator_requires_either_price_spelling(self):
+        schema = json.loads((ROOT / "schema/bmopf/0.2.0/bmopf.schema.json").read_text())
+        generator = {"bus": "source", "configuration": "WYE", "terminal_map": ["a", "b", "c", "n"], "energy_cost_rate": [1, 2, 3]}
+        self.case["generator"] = {"g": generator}
+        self.assertTrue(jsonschema.validate(self.case, schema) is None)
+        self.assertEqual(validate(self.case), [])
+        generator["cost"] = [1, 2, 4]
+        self.assertIn("BMOPF.COST_ALIAS", {f.code for f in validate(self.case)})
+        del generator["cost"]
+        del generator["energy_cost_rate"]
+        self.assertFalse(jsonschema.Draft202012Validator(schema).is_valid(self.case))
+
+    def test_source_prices_follow_terminal_order(self):
+        source = next(iter(self.case["voltage_source"].values()))
+        source["cost"] = [1, 2, 3]
+        source["energy_cost_rate"] = [1.0, 2.0, 3.0, 0.0]
+        self.assertEqual(validate(self.case), [])
+        source["energy_cost_rate"][-1] = 4
+        self.assertIn("BMOPF.COST_ALIAS", {f.code for f in validate(self.case)})
+        del source["cost"]
+        source["energy_cost_rate"].pop()
+        self.assertIn("BMOPF.DIMENSION", {f.code for f in validate(self.case)})
 
     def test_historical_examples_keep_their_recorded_findings(self):
         contract = json.loads((ROOT / "contracts/historical.json").read_text())

@@ -5,7 +5,7 @@ conductors, equipment and operating limits. This repository accompanies the
 [Task Force's mathematical and data-model specification](https://github.com/distribution-system-opt/math-and-data-model-specifications).
 
 **This branch proposes BMOPF 0.2.0. It is not a ratified release.** PowerIO
-v0.11.0 is preparing support for a pinned revision of this proposal. Shipping
+v0.11.0 is preparing support for draft BMOPF 0.2. Shipping
 an implementation does not determine the Task Force's modelling decisions.
 Feedback on those decisions and on interoperability is welcome.
 
@@ -32,6 +32,7 @@ buses, a 100 m cable, a fixed voltage source and three unequal phase loads.
 - Cable resistance is 0.001 ohm/m per conductor, hence 0.1 ohm over the line.
 - The source fixes phase-to-ground magnitudes to 230 V and neutral to 0 V.
 - Load powers are 1000, 800 and 1200 W, in phase order.
+- Source energy prices are 0.10 $/kWh for each phase and zero for the neutral.
 - The load bus's minimum magnitudes are 210, 212 and 214 V. The neutral has
   its separate 10 V cap; it does not receive a fourth phase bound.
 
@@ -61,7 +62,7 @@ remain legitimate. A conversion that relocates required physics into `extras`
 must report that relocation; consumers cannot assume that ignoring it preserves
 the original calculation.
 
-## Pin a proposal reproducibly
+## Identify the draft reproducibly
 
 The schema's `$id` is its canonical identity. Retrieval is separate: a producer
 supporting this proposal should write an immutable raw GitHub commit URL in
@@ -75,7 +76,7 @@ These versions answer different questions:
 | Identifier | Meaning |
 |---|---|
 | `meta.version` | Dataset revision chosen by its author |
-| `meta.schema_version` | BMOPF structural/semantic profile |
+| `meta.schema_version` | BMOPF schema version |
 | Proposal commit and schema digest | Exact reviewed proposal snapshot |
 | PowerIO v0.11.0 | Producer implementation version |
 | PowerIO IR generation 2 | PowerIO's own serialized module layout |
