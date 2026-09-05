@@ -109,7 +109,9 @@ Terminal identities are case-sensitive. Explicit role lists take precedence;
 without them, `n` and `N` are neutral labels, and terminal `4` in the complete
 `1,2,3,4` convention is neutral. Phase limit vectors retain bus order after
 excluding neutral and earth terminals. Unused terminals remain meaningful
-connection points and are preserved by the PowerIO writer.
+connection points and are preserved by the PowerIO writer. An element map may
+repeat a bus terminal: parallel physical conductors can connect to the same
+phase node. Their conductor positions and matrix rows remain distinct.
 
 DC end maps must refer to terminals on the named DC buses. Per-conductor
 resistance, current limits, and the opposite end map have matching lengths.

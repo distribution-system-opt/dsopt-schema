@@ -49,6 +49,10 @@ class SemanticContract(unittest.TestCase):
         }}}
         self.assertIn("BMOPF.BOUNDS", {f.code for f in validate(self.case)})
 
+    def test_parallel_conductors_may_share_a_bus_terminal(self):
+        self.case["line"]["feeder"]["terminal_map_from"] = ["a", "a", "a", "n"]
+        self.assertEqual(validate(self.case), [])
+
     def test_dc_maps_and_profiles(self):
         self.case["dc_bus"] = {"d": {"terminal_names": ["p", "r"], "v_dc_min": [0]}}
         self.case["dc_load"] = {"load": {"dc_bus": "d", "terminal_map": ["absent", "r"], "p": 5}}

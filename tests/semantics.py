@@ -77,8 +77,6 @@ def validate(doc: dict) -> list[Finding]:
             fail("BMOPF.REFERENCE", f"{path}/{bus_key}", "Bus does not exist")
             return
         names = record.get(map_key, [])
-        if len(set(names)) != len(names):
-            fail("BMOPF.TERMINAL", f"{path}/{map_key}", "Terminal map contains duplicates")
         for name in names:
             if name != "g" and name not in bus.get("terminal_names", []):
                 fail("BMOPF.REFERENCE", f"{path}/{map_key}", f"Terminal {name!r} does not exist on the bus")
@@ -187,8 +185,6 @@ def validate(doc: dict) -> list[Finding]:
                 names = record.get("dc_terminal_map", record.get(map_field, [record["terminal"]] if "terminal" in record else []))
                 if bus is None or any(n not in bus.get("terminal_names", []) for n in names):
                     fail("BMOPF.REFERENCE", path + "/" + bus_field, "DC bus or terminal does not exist")
-                if len(names) != len(set(names)):
-                    fail("BMOPF.TERMINAL", path + "/" + map_field, "DC terminal map contains duplicates")
         if path.startswith("/dc_branch/") and "dc_bus_from" in record:
             for field in ("terminal_map_to", "r", "i_max"):
                 dimension(record, field, len(record.get("terminal_map_from", [])), path)
