@@ -110,3 +110,16 @@ BMOPFTools' compatibility tests additionally materialize the explicit coil
 branch as an ordinary bus shunt, test its complex power independently, and
 retain the source object in `_meta.explicit_transformer_core_shunts`. Its supported legacy schema
 profile remains distinct from accepting an arbitrary proposal identifier.
+
+## Complete four-winding reactances
+
+PowerIO's `a84d97d97343b4175e9a846aa358997ff53b0e5f` candidate preserves all
+OpenDSS `Xscarray` pairs through its typed model, IR, BMOPF and regenerated DSS.
+The reader respects OpenDSS edit boundaries and the writer emits every pair.
+The BMOPFTools [0.11 integration tests](https://github.com/frederikgeth/BMOPFTools.jl/pull/385)
+check the six proposed `x_sc` entries against the first winding's per-coil
+impedance base. Its native four-winding DYYN power flow matches all 12 energized
+OpenDSS nodes at the existing 2 V / 0.3% tolerance, with maximum LV error below
+0.094 V. This validates that fixture and nominal taps, not arbitrary n-winding
+control models. Two reactance discrepancies leave the field-level expected-loss
+ledger; unrelated round-trip losses remain explicit.
