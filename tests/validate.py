@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import sys
+from semantics import validate as validate_semantics
 from pathlib import Path
 
 try:
@@ -70,7 +71,14 @@ def check_version(directory: Path) -> None:
                 location = "/".join(str(part) for part in error.absolute_path)
                 print(f"     {location or '<root>'}: {error.message}")
         else:
-            print(f"ok   {case.relative_to(ROOT)} validates")
+            print(f"ok   {case.relative_to(ROOT)} validates structurally")
+            semantic = [[finding.code, finding.path] for finding in validate_semantics(json.loads(case.read_text()))]
+            historical = json.loads((ROOT / "contracts/historical.json").read_text())
+            expected = historical.get(str(case.relative_to(ROOT)), {}).get("findings", [])
+            if semantic != expected:
+                fail(f"{case.relative_to(ROOT)} has unexpected semantic findings: {semantic}")
+            elif semantic:
+                print(f"     recorded historical findings: {semantic}")
 
     rejected = sorted((ROOT / "tests" / "rejected" / version).glob("*.json"))
     if not rejected:

@@ -1,87 +1,104 @@
-# dsopt-schema
+# BMOPF data schema
 
-The JSON Schema documents released by the IEEE PES Task Force on Benchmarking
-Multiconductor OPF (BMOPF) for Distribution Systems.
+BMOPF gives distribution-system datasets a shared, explicit description of
+conductors, equipment and operating limits. This repository accompanies the
+[Task Force's mathematical and data-model specification](https://github.com/distribution-system-opt/math-and-data-model-specifications).
 
-This repository is the canonical home of the BMOPF data schema, as named by the
-Task Force's [specification
-repository](https://github.com/distribution-system-opt/math-and-data-model-specifications).
-A schema here defines the structure of a BMOPF network case: the table and field
-names, the types, which fields are required, and the array and matrix key
-shapes. The meaning of every field, the mathematical model, and the OPF
-formulation live in the specification, which is normative for semantics; a
-schema is normative for structure. The two are kept in agreement, and a field
-rename is not complete until both state the new name.
+**This branch proposes BMOPF 0.2.0. It is not a ratified release.** PowerIO
+v0.11.0 is preparing support for a pinned revision of this proposal. Shipping
+an implementation does not determine the Task Force's modelling decisions.
+Feedback on those decisions and on interoperability is welcome.
 
-## Layout
+## What the proposal adds
 
-```
-schema/bmopf/<version>/bmopf.schema.json   one released or proposed schema version
-examples/<version>/                        cases that validate against that version
-tests/validate.py                          validates every example, and checks the rejections
-CHANGELOG.md                               what changed between versions
-```
+The proposal describes regulator taps, winding neutral impedances, transformer
+magnetizing terms and n-winding equipment, together with inverter controls,
+line construction provenance, DC data and named time profiles. It also makes
+units and conductor ordering explicit and fills missing cost fields referenced
+by the OPF objective. [Changes and compatibility](CHANGELOG.md) explain the
+individual additions.
 
-Each version is an immutable directory. A published version is never edited in
-place; a correction is a new version.
+The schema defines structure. The accompanying proposed specification supplement
+describes the intended semantics. Neither a field's presence nor successful
+parsing proves that a particular solver implements it.
 
-## Versioning
+## Start with a small feeder
 
-A schema version is `MAJOR.MINOR.PATCH` and is released as a git tag
-`schema-vMAJOR.MINOR.PATCH`, the prefix the specification repository's
-contributing guide reserves for schema releases so a schema tag never reads as a
-specification documentation version.
+[worked_feeder.json](examples/0.2.0/worked_feeder.json) describes two four-terminal
+buses, a 100 m cable, a fixed voltage source and three unequal phase loads.
 
-A schema document states its own version twice, and a case states which one it
-was written against:
+- `terminal_names` fixes bus order as `a, b, c, n`.
+- The line maps corresponding terminals in that same order at both ends.
+- Cable resistance is 0.001 ohm/m per conductor, hence 0.1 ohm over the line.
+- The source fixes phase-to-ground magnitudes to 230 V and neutral to 0 V.
+- Load powers are 1000, 800 and 1200 W, in phase order.
+- The load bus's minimum magnitudes are 210, 212 and 214 V. The neutral has
+  its separate 10 V cap; it does not receive a fourth phase bound.
 
-- `$id` is the raw URL of the document, and carries the version.
-- `meta.schema_version` is a constant equal to that version, so a case that
-  states it cannot claim a version the document does not have.
-- `meta.$schema` in a case is the `$id` of the schema the case validates
-  against. A reader selects the schema version from this field. A case that
-  omits it declares no version.
+[Field semantics](docs/semantics.md) explains the less obvious conventions.
+[The field inventory](docs/fields.csv) lists every proposed field, and
+[the conformance packet](docs/conformance.md) distinguishes preserved data,
+validated data and supported calculations.
 
-`meta.version` in a case is the version of the dataset, chosen by whoever
-publishes the case. It is unrelated to the schema version: a case may revise its
-own data many times against one schema version.
+## Validate structure and semantics
 
-## Validating a case
-
-`tests/validate.py` needs the `jsonschema` package.
-
-```
+```sh
 python3 -m pip install jsonschema
 python3 tests/validate.py
+python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-It validates every file under `examples/<version>/` against
-`schema/bmopf/<version>/bmopf.schema.json`, and checks that the documents under
-`tests/rejected/<version>/` are each rejected, so the strictness rules stay
-enforced rather than merely described.
+Structural validation checks types, required fields and permitted names.
+`tests/semantics.py` additionally checks dimensions, terminal roles, references,
+matrix indices and bounds. Historical examples keep their original content;
+known semantic findings are pinned in the tests rather than silently repaired.
+A computational consumer must perform its own capability and numerical checks
+before solving a case.
 
-## What the schema rejects
+Unknown electrical fields are rejected. Two extension locations are deliberately
+free-form: top-level `extras` and `meta.provenance`. Existing provenance keys
+remain legitimate. A conversion that relocates required physics into `extras`
+must report that relocation; consumers cannot assume that ignoring it preserves
+the original calculation.
 
-Every object in a BMOPF schema sets `additionalProperties` to `false`, and the
-matrix element names are the only pattern-matched keys. An unknown field is
-rejected wherever it appears.
+## Pin a proposal reproducibly
 
-The single exception is the top-level `extras` object, which is free-form. Data
-there carries no defined meaning, so a reader that ignores `extras` reads a
-different network than the writer wrote. A writer that moves data into `extras`
-rather than dropping it says so.
+The schema's `$id` is its canonical identity. Retrieval is separate: a producer
+supporting this proposal should write an immutable raw GitHub commit URL in
+`meta.$schema`, then record the proposal commit, SHA-256 of the schema bytes and
+`status: "proposal"` in `meta.provenance`. Retrieve and verify that exact file
+rather than following a moving branch. Older canonical identifiers remain
+readable aliases, not evidence that 0.2.0 was ratified.
 
-## Licence
+These versions answer different questions:
 
-[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), the same licence as
-the specification; see [LICENSE](LICENSE). By opening a pull request you agree
-to license your contribution under the same terms.
+| Identifier | Meaning |
+|---|---|
+| `meta.version` | Dataset revision chosen by its author |
+| `meta.schema_version` | BMOPF structural/semantic profile |
+| Proposal commit and schema digest | Exact reviewed proposal snapshot |
+| PowerIO v0.11.0 | Producer implementation version |
+| PowerIO IR generation 2 | PowerIO's own serialized module layout |
+| PowerIO C ABI 7 | Native binding contract |
 
-Network cases are licensed separately. Each inherits the licence of the data it
-derives from, recorded in its own `meta.license` field, and this repository's
-licence does not apply to them.
+Only the Task Force releases a `schema-v0.2.0` tag. Proposed directories may
+change during review; a released schema directory is immutable.
 
-## Citation
+## Repository layout and contribution
 
-A schema is versioned and not static. Cite the version, by its tag, that a
-result was produced against.
+```text
+schema/bmopf/0.2.0/   proposed JSON Schema
+examples/0.2.0/       historical and authored examples
+contracts/           compatibility expectations
+tests/              structural and semantic checks
+docs/               semantics, field inventory and integration evidence
+```
+
+Follow [CONTRIBUTING.md](CONTRIBUTING.md) and the specification repository's
+paired-change workflow for changes to fields or their meaning. Substantial
+mathematical explanations belong in that specification, with links here.
+
+Schema and documentation contributions use [CC BY 4.0](LICENSE). Network
+examples retain their own licences in `meta.license` or the accompanying source
+record. Cite the exact proposal commit for reproducibility, and a release tag
+once one exists.
