@@ -20,8 +20,7 @@ A structural acceptance result alone does not establish numerical equivalence.
 ### Integration corrections
 
 - Use `energy_cost_rate` in $/kWh, following the coordinated source/objective
-  proposal. Keep `cost` as a deprecated compatible spelling. Source prices
-  follow full terminal order; generator and IBR prices follow phase order.
+  proposal. Keep `cost` as a deprecated compatible spelling. Source, generator and IBR prices follow phase order.
 
 - Preserve n-winding ratings, tap ratios and winding-neutral impedances with
   explicit winding fields; keep per-winding current limits and tap bounds.

@@ -20,11 +20,15 @@ Matrix indices are one-based in this order. A stated triangle can supply its
 mirror; absent off-diagonal entries are zero. Consumers must not silently
 truncate oversized matrices or pad mismatched conductor maps.
 
-When `terminal_conventions` exists, its disjoint role lists are authoritative
-and case-sensitive. Otherwise `n` and `N` are neutrals, and `4` is neutral on a
+PowerIO's compatibility reader uses disjoint role lists in `terminal_conventions` when supplied
+with case-sensitive matching. Otherwise `n` and `N` are neutrals, and `4` is neutral on a
 bus whose terminal set is exactly `1,2,3,4`. Other names are phases. The ground
 reference `g` is implicit and does not become an extra bus terminal. Earth
 wires are explicit conductors, with their impedance and connections retained.
+These compatibility rules preserve existing inputs; the Task Force's role
+taxonomy remains open in [PR #26](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/26).
+The semantic checker records these implementation assumptions; no terminal
+spelling becomes canonical through this integration.
 
 ## Voltage, current and power arrays
 
@@ -158,27 +162,23 @@ provide data and numerical checks. Consumers that cannot model this branch
 must reject the requested calculation or make a documented exact conversion,
 such as a bus-shunt stamp with the same coil incidence.
 
-## Energy prices and objective units
+## Compatibility with Matt Deakin's energy-price proposal
 
-`energy_cost_rate` states the price of injected active energy in $/kWh.
-Generator and IBR vectors follow phase order. A voltage source's vector follows
-its complete `terminal_map`, including any neutral terminal. Source injections
-use the same positive-generation convention as generator injections. A source
-can supply or absorb current independently at each fixed terminal; its neutral
-must not acquire a generator-only zero-current constraint.
+The proposed [source and objective definitions](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/36)
+and [paired schema change](https://github.com/distribution-system-opt/bmopf-resources/pull/21)
+provide the `energy_cost_rate` name and $/kWh units. This branch follows them.
+Source and generator prices follow phase order, excluding neutral terminals;
+source voltage magnitudes and angles retain full terminal order. PR #36 fixes
+the objective duration at one hour. This branch adds no duration field or
+alternative source-current equation.
 
-For one hour at 1000 W injection, a rate of 0.10 $/kWh contributes $0.10.
-For an interval of `duration_hours`, the contribution is
-`duration_hours * sum(energy_cost_rate * p_injected_w) / 1000`.
-The interval belongs to the calculation, not the network's dataset version.
-These choices follow the coordinated
-[source and objective discussion](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/36)
-and [data-field proposal](https://github.com/distribution-system-opt/bmopf-resources/pull/21).
+The integration adds a deprecated `cost` alias with the same values and phase
+order, IR and typed binding preservation, and reported legacy-schema relocation.
+Supplying both price spellings requires equal values. Fresh draft BMOPF 0.2
+output uses `energy_cost_rate`. Explicit 0.1.0 output uses generator `cost` and
+preserves source prices in `extras.voltage_source`, since that schema has no
+source-price field. A consumer must read that overlay to use the prices.
 
-The deprecated `cost` spelling remains accepted with its stated per-phase
-ordering. For a voltage source it expands to terminal order with zero at
-nonphase terminals. Supplying both names requires equal rates after that
-expansion. Fresh draft BMOPF 0.2 output uses `energy_cost_rate`. Explicit 0.1.0
-output uses generator `cost` and preserves source prices in the documented
-`extras.voltage_source` overlay, because that schema has no source-price field.
-A generic 0.1.0 consumer must not assume that it has loaded those prices.
+Optional IBR prices are an additional data-preservation extension for downstream
+calculations, not a change to Matt's source/generator objective. The alignment
+record is in [upstream-alignment.md](upstream-alignment.md).
