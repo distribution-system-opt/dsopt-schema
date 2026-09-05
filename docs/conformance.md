@@ -1,7 +1,8 @@
-# PowerIO integration conformance packet
+# BMOPF v0.2.0 compatibility and implementation evidence
 
-This packet accompanies the proposed BMOPF 0.2.0 schema and the integration
-being prepared for PowerIO v0.11.0. Ratification remains a Task Force decision.
+This packet supports Task Force review of a versioned BMOPF v0.2.0. It records
+findings from developing a reference implementation in PowerIO v0.11.0 and
+comparisons with BMOPFTools and OpenDSS. Ratification remains a Task Force decision.
 
 ## Frozen comparison inputs
 
@@ -12,7 +13,7 @@ URLs, byte digests and field paths for these inputs:
 |---|---|
 | Archived complete BMOPF draft | `bmopf-resources` `2e0b1cba27a279cbf430836f1cd0cb4370887109` |
 | PowerIO's legacy 0.1.0 schema | PowerIO `ca8cfcec8bdc35d083dfc91b0bb9025ac8bb7507` |
-| Proposal before this integration | `dsopt-schema` `f9e0802bf1d510abaa97a5731ce14c3eb3373e6d` |
+| Initial versioned proposal | `dsopt-schema` `f9e0802bf1d510abaa97a5731ce14c3eb3373e6d` |
 | Accepted mathematical/data specification | `73fae2b6bae2663d9a2e901c41a4c062457bf834` |
 | Public BMOPFTools comparison baseline | `4c4dafdd2b1a36541f2d1a068b01bdcc6dfcfc3a` |
 
@@ -42,7 +43,7 @@ An absent schema default is not an invented electrical default.
 | Wire data / geometry | Construction/provenance retention and supported conversion | Preserve or diagnose unsupported projection | A supplied linecode is distinct from calculating it from geometry |
 | DC / time profiles | Retain tables and field references | Proposal tables; legacy relocation reports | Requires a DC-capable formulation or an explicitly selected time state |
 
-The table identifies the integration paths, not a blanket certification of every
+The table identifies the implementation paths, not a blanket certification of every
 numerical field. The final release review packet must include the exact PowerIO
 and consumer revisions and the independent numerical comparisons. No solver
 support should be inferred from a parsing or schema-validation result.
