@@ -141,3 +141,13 @@ The draft schema published in
 [`distribution-system-opt/bmopf-resources`](https://github.com/distribution-system-opt/bmopf-resources)
 as `draft_schema_and_networks/draft_bmopf_schema.json`. Not released from this
 repository; recorded here as the base 0.2.0 extends.
+
+### Explicit exciting-branch location and conformance evidence
+
+- Add the optional `no_load_shunt` object with a physical winding index and
+  per-coil siemens, mutually exclusive with the existing from-side fields.
+  Existing data retains its meaning. This represents the OpenDSS winding-2
+  exciting branch without an approximation across transformer leakage.
+- Add a worked example, schema and semantic checks, expanded field-by-field
+  implementation/evidence columns, and six independent OpenDSS stamp comparisons.
+- Keep proposal status explicit; publication of PowerIO does not ratify BMOPF.

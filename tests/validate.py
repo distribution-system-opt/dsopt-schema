@@ -53,6 +53,8 @@ def check_version(directory: Path) -> None:
     )
     if schema.get("$id") != expected_id:
         fail(f"{version}: $id is {schema.get('$id')!r}, expected {expected_id!r}")
+    if schema.get("version") != version:
+        fail(f"{version}: schema version annotation disagrees with directory")
     stated = schema["properties"]["meta"]["properties"]["schema_version"].get("const")
     if stated != version:
         fail(f"{version}: meta.schema_version const is {stated!r}")

@@ -12,7 +12,7 @@ Feedback on those decisions and on interoperability is welcome.
 ## What the proposal adds
 
 The proposal describes regulator taps, winding neutral impedances, transformer
-magnetizing terms and n-winding equipment, together with inverter controls,
+magnetizing terms with an explicit coil location and n-winding equipment, together with inverter controls,
 line construction provenance, DC data and named time profiles. It also makes
 units and conductor ordering explicit and fills missing cost fields referenced
 by the OPF objective. [Changes and compatibility](CHANGELOG.md) explain the

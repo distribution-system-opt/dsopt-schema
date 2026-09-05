@@ -67,6 +67,15 @@ class SemanticContract(unittest.TestCase):
         codes = {f.code for f in validate(self.case)}
         self.assertTrue({"BMOPF.MATRIX", "BMOPF.REFERENCE"}.issubset(codes))
 
+    def test_no_load_shunt_has_a_physical_winding(self):
+        self.case["transformer"] = {"single_phase": {"t": {"no_load_shunt": {"winding": 3, "g": 0.1, "b": -0.2}}}}
+        self.assertIn("BMOPF.REFERENCE", {f.code for f in validate(self.case)})
+        t = self.case["transformer"]["single_phase"]["t"]
+        t["no_load_shunt"]["winding"] = 2
+        self.assertEqual(validate(self.case), [])
+        t["g_no_load"] = 0
+        self.assertIn("BMOPF.AMBIGUOUS", {f.code for f in validate(self.case)})
+
     def test_historical_examples_keep_their_recorded_findings(self):
         contract = json.loads((ROOT / "contracts/historical.json").read_text())
         for name, expected in contract.items():
