@@ -50,7 +50,7 @@ support should be inferred from a parsing or schema-validation result.
 ## Tested compatibility statement
 
 The structural suite validates the historical ENWL file, the component example
-and the authored worked feeder and transformer. Twenty negative files exercise structural
+and the authored worked feeder and transformer. Twenty-one negative files exercise structural
 rejections. The semantic suite additionally exercises conflicting versions,
 role-list overlap, phase-array length, unequal end-map length, unknown references,
 oversized matrix indices, inconsistent tap bounds, DC terminal references,
@@ -108,5 +108,5 @@ The implementation follows the separate exciting-branch stamp in
 [DSS C-API Transformer.pas](https://github.com/dss-extensions/dss_capi/blob/87d85c2622c8281b92255335bc7c09b11191b21d/src/PDElements/Transformer.pas).
 BMOPFTools' compatibility tests additionally materialize the explicit coil
 branch as an ordinary bus shunt, test its complex power independently, and
-retain the source object in producer provenance. Its supported legacy schema
+retain the source object in `_meta.explicit_transformer_core_shunts`. Its supported legacy schema
 profile remains distinct from accepting an arbitrary proposal identifier.
