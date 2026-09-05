@@ -128,10 +128,6 @@ def validate(doc: dict) -> list[Finding]:
             np = len(phases(names))
             if "cost" in record and "energy_cost_rate" in record:
                 old = record["cost"]
-                if kind == "voltage_source":
-                    rates = iter(old)
-                    phase_names = phases(names)
-                    old = [next(rates, None) if name in phase_names else 0 for name in names]
                 if old != record["energy_cost_rate"]:
                     fail("BMOPF.COST_ALIAS", path, "cost and energy_cost_rate must agree in their declared conductor order")
             if kind == "load":
@@ -140,9 +136,9 @@ def validate(doc: dict) -> list[Finding]:
                 for key in ("p_nom", "q_nom", "v_nom", "alpha_p", "alpha_i", "alpha_z", "beta_p", "beta_i", "beta_z", "gamma_p", "gamma_q"):
                     dimension(record, key, np, path)
             elif kind == "voltage_source":
-                for key in ("v_magnitude", "v_angle", "energy_cost_rate"):
+                for key in ("v_magnitude", "v_angle"):
                     dimension(record, key, nt, path)
-                for key in ("p_min", "p_max", "cost"):
+                for key in ("p_min", "p_max", "cost", "energy_cost_rate"):
                     dimension(record, key, np, path)
             elif kind in ("generator", "ibr"):
                 for key in ("p_min", "p_max", "q_min", "q_max", "s_max", "cost", "energy_cost_rate"):

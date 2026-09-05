@@ -5,9 +5,12 @@ conductors, equipment and operating limits. This repository accompanies the
 [Task Force's mathematical and data-model specification](https://github.com/distribution-system-opt/math-and-data-model-specifications).
 
 **This branch proposes BMOPF 0.2.0. It is not a ratified release.** PowerIO
-v0.11.0 is preparing support for draft BMOPF 0.2. Shipping
+v0.11.0 is preparing support for draft BMOPF 0.2, building on
+[Matt Deakin's source/objective proposal](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/36). Shipping
 an implementation does not determine the Task Force's modelling decisions.
 Feedback on those decisions and on interoperability is welcome.
+[Alignment with existing proposals](docs/upstream-alignment.md) distinguishes
+Matt's definitions, additive compatibility work and unresolved questions.
 
 ## What the proposal adds
 
@@ -32,7 +35,7 @@ buses, a 100 m cable, a fixed voltage source and three unequal phase loads.
 - Cable resistance is 0.001 ohm/m per conductor, hence 0.1 ohm over the line.
 - The source fixes phase-to-ground magnitudes to 230 V and neutral to 0 V.
 - Load powers are 1000, 800 and 1200 W, in phase order.
-- Source energy prices are 0.10 $/kWh for each phase and zero for the neutral.
+- Source energy prices are 0.10 $/kWh for each phase, with no neutral entry.
 - The load bus's minimum magnitudes are 210, 212 and 214 V. The neutral has
   its separate 10 V cap; it does not receive a fourth phase bound.
 
