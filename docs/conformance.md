@@ -31,7 +31,7 @@ An absent schema default is not an invented electrical default.
 
 | Data | PowerIO reader / IR | Explicit writer | Computational contract and evidence |
 |---|---|---|---|
-| Schema identifiers | Resolve known version aliases; report contradictions | Selected profile overrides retained-source echo | Version consistency regression; producer provenance pins proposal bytes |
+| Schema identifiers | Resolve known version aliases; report contradictions | Selected schema version overrides retained-source echo | Version consistency regression; producer provenance pins proposal bytes |
 | Metadata / provenance | Preserve source metadata independently of electrical tables | Keep legitimate `meta.provenance` and `extras` | Metadata is excluded from semantic equipment traversal |
 | Bus terminals / phase bounds | Preserve order and unequal per-phase values in generation-2 IR | Emit full phase arrays; PMD uses terminal order and kV conversion | Phase-dimension, unresolved-ground and IR-without-source regressions |
 | Lines / linecodes | Typed conductor matrices and ordered end maps | Per-metre versus absolute impedance remains explicit | Shape/reference tests; passive matrix analytical tests |
@@ -79,7 +79,7 @@ python3 tests/field_inventory.py --check
 ```
 
 PowerIO regression commands include the BMOPF/PMD conversion suites, facade IR
-and explicit-profile tests, C ABI tests, and multiconductor matrix tests. Tests
+and explicit schema-version tests, C ABI tests, and multiconductor matrix tests. Tests
 must emit from changed or deserialized values as well as retained sources: a
 byte-exact echo does not test a writer's electrical conversion.
 
@@ -108,8 +108,7 @@ The implementation follows the separate exciting-branch stamp in
 [DSS C-API Transformer.pas](https://github.com/dss-extensions/dss_capi/blob/87d85c2622c8281b92255335bc7c09b11191b21d/src/PDElements/Transformer.pas).
 BMOPFTools' compatibility tests additionally materialize the explicit coil
 branch as an ordinary bus shunt, test its complex power independently, and
-retain the source object in `_meta.explicit_transformer_core_shunts`. Its supported legacy schema
-profile remains distinct from accepting an arbitrary proposal identifier.
+retain the source object in `_meta.explicit_transformer_core_shunts`. Its supported legacy schema version remains distinct from accepting an arbitrary proposal identifier.
 
 ## Complete four-winding reactances
 
@@ -123,3 +122,25 @@ OpenDSS nodes at the existing 2 V / 0.3% tolerance, with maximum LV error below
 0.094 V. This validates that fixture and nominal taps, not arbitrary n-winding
 control models. Two reactance discrepancies leave the field-level expected-loss
 ledger; unrelated round-trip losses remain explicit.
+
+
+## Energy-price compatibility
+
+Draft BMOPF 0.2 accepts `energy_cost_rate` and the deprecated `cost` spelling.
+The required generator price remains required: either spelling satisfies it.
+Rates remain $/kWh; no existing coefficient receives a numerical rescaling.
+A source's legacy phase vector expands into its terminal map with zero at
+nonphase positions. Conflicting spellings and incorrect vector lengths are
+semantic errors. Fresh draft output uses the proposed name.
+
+PowerIO's `energy_costs_keep_terminal_order_through_mutation_ir_and_schema_conversion`
+test changes a source price, serializes the network to IR, and checks both 0.1.0
+and draft output. C tests read the borrowed price span after the module handle
+is freed; Julia checks the vector after IR restoration and garbage collection.
+IBR prices remain retained fields, and their presence does not claim that a
+consumer implements inverter controls or optimizes an IBR objective.
+
+Unresolved OpenDSS geometry deliberately blocks numerical calculation and
+canonical export. Retaining source objects is not equivalent to calculating
+conductor impedances. This distinction is covered by the PowerIO readiness and
+facade integration tests associated with contributor PR #494.
