@@ -81,10 +81,11 @@ strictness rule without a rejected document is a rule nothing enforces.
   field `A_k_j`.
 - **A vector is a JSON array** whose order and length are stated by the field,
   against the element's own terminal map.
-- **Absent means unbounded or zero.** An absent constraint field states no
-  constraint; an absent parameter field states zero.
-- **Unknown fields are rejected** everywhere except the top-level `extras`
-  object.
+- **Absence follows the field contract.** An absent bound imposes no constraint.
+  Parameters use their documented defaults; for example, an omitted tap ratio
+  is one, while an omitted internal neutral branch adds no grounding branch.
+- **Unknown fields are rejected** except in top-level `extras` and
+  `meta.provenance`, which preserve extension data and producer metadata.
 - **No null anywhere.** A field a case cannot state is omitted, not nulled.
 
 ## Licence
