@@ -146,6 +146,14 @@ def validate(doc: dict) -> list[Finding]:
                     fail("BMOPF.REFERENCE", path + "/" + field, f"Referenced {table} does not exist")
 
     def check_transformer(record, path):
+        if "no_load_shunt" in record:
+            shunt = record["no_load_shunt"]
+            count = len(record["windings"]) if "windings" in record else 3 if "/center_tap/" in path else 2
+            index = shunt.get("winding") if isinstance(shunt, dict) else None
+            if not isinstance(index, int) or isinstance(index, bool) or not 1 <= index <= count:
+                fail("BMOPF.REFERENCE", path + "/no_load_shunt/winding", "No-load shunt winding does not exist")
+            if "g_no_load" in record or "b_no_load" in record:
+                fail("BMOPF.AMBIGUOUS", path + "/no_load_shunt", "Use one no-load admittance representation")
         for side in ("from", "to"):
             terminal_map(record, f"bus_{side}", f"terminal_map_{side}", path)
         for root in ("tap_ratio", "tap"):

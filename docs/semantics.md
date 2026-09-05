@@ -126,3 +126,34 @@ Each time-profile mapping names an existing profile and a stated numeric field
 on the element. A profile's optional time axis has the same length as its
 values and increases strictly. Consumers must select a step and check that
 referenced profiles share the same step grid before evaluating a time state.
+
+## Explicit transformer core shunts
+
+`no_load_shunt` names a physical winding and states its per-coil admittance in
+siemens. It is mutually exclusive with `g_no_load` and `b_no_load`. Omitting the
+object preserves the existing from-side convention of those fields (winding 1
+for `n_winding`); no input receives a new default shunt.
+
+```json
+"no_load_shunt": {"winding": 2, "g": 0.001, "b": -0.002}
+```
+
+For a 100 V coil this object consumes 10 W and 20 var. Each coil on winding 2
+receives the stated admittance. The object specifies the terminal-coil branch
+at the operating tap: changing a tap does not implicitly rescale its physical
+siemens. Two-winding objects count from and to as 1 and 2. A centre-tapped
+secondary counts its first leg as 2 and its second leg as 3. An n-winding
+object uses its declared winding order.
+
+The distinction matters because OpenDSS places its exciting branch on winding
+2. Moving it to winding 1 through a turns-ratio calculation is not exact when
+leakage is nonzero. The explicit object preserves that branch at its physical
+location. WYE three-phase coil voltage is line-to-line voltage divided by the
+square root of three; a DELTA coil uses line-to-line voltage. A positive
+OpenDSS magnetizing-current percentage yields negative susceptance.
+
+[The worked transformer](../examples/0.2.0/worked_transformer_shunt.json) and
+[the conformance packet](conformance.md#independent-core-shunt-comparison)
+provide data and numerical checks. Consumers that cannot model this branch
+must reject the requested calculation or make a documented exact conversion,
+such as a bus-shunt stamp with the same coil incidence.
