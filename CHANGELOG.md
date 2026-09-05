@@ -9,10 +9,25 @@ A proposal under the Task Force review tier of the specification's contributing
 guide. It adds element classes and settles four questions the 0.1.0 text leaves
 open. Nothing here is accepted material until the Task Force ratifies it.
 
-0.2.0 is a superset of 0.1.0: every accepted 0.1.0 field keeps its name, type,
-units, and optionality, so an existing 0.1.0 case validates against 0.2.0
-unchanged. `examples/0.2.0/example_enwl_n1_f2.json` is one such case, checked on
-every run.
+Compatibility is checked against named examples and the field inventory in
+[the conformance packet](docs/conformance.md). The historical ENWL example
+still passes structural validation; semantic validation reports its existing
+reference to an undeclared grounded terminal. The proposal deliberately rejects
+ambiguous line impedance sources, contradictory version declarations, invalid
+array dimensions, unresolved electrical references, and inconsistent bounds.
+A structural acceptance result alone does not establish numerical equivalence.
+
+### Integration corrections
+
+- Preserve n-winding ratings, tap ratios and winding-neutral impedances with
+  explicit winding fields; keep per-winding current limits and tap bounds.
+- Distinguish an absent internal neutral branch from an explicitly zero
+  grounding impedance. This preserves existing terminal-map-only models and
+  makes OpenDSS open-neutral conversion unambiguous.
+- Require two entries in each open-delta regulator tap array.
+- Add semantic checks for versions, roles, dimensions, references and bounds.
+- Separate canonical schema identity from immutable proposal retrieval and
+  preserve both metadata extension locations, including `meta.provenance`.
 
 ### Added, restored from the archived draft
 
