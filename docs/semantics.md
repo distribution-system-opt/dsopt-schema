@@ -82,10 +82,10 @@ pair gives solid grounding.
 ## Extensions, legacy output and validation
 
 `meta.provenance` carries arbitrary producer/audit metadata. Top-level `extras`
-can retain data outside the selected structural profile. Neither is a place to
+can retain data outside the selected schema version. Neither is a place to
 hide an unreported electrical loss.
 
-PowerIO's explicit 0.1.0 profile relocates proposed-only tables and regulator or
+PowerIO's explicit 0.1.0 output relocates proposed-only tables and regulator or
 n-winding subtypes into `extras`, and reports each relocation. Extra transformer
 parameters are keyed by subtype and equipment ID. Its reader merges those
 recognized overlays back into typed data, with the standard field taking
@@ -157,3 +157,28 @@ OpenDSS magnetizing-current percentage yields negative susceptance.
 provide data and numerical checks. Consumers that cannot model this branch
 must reject the requested calculation or make a documented exact conversion,
 such as a bus-shunt stamp with the same coil incidence.
+
+## Energy prices and objective units
+
+`energy_cost_rate` states the price of injected active energy in $/kWh.
+Generator and IBR vectors follow phase order. A voltage source's vector follows
+its complete `terminal_map`, including any neutral terminal. Source injections
+use the same positive-generation convention as generator injections. A source
+can supply or absorb current independently at each fixed terminal; its neutral
+must not acquire a generator-only zero-current constraint.
+
+For one hour at 1000 W injection, a rate of 0.10 $/kWh contributes $0.10.
+For an interval of `duration_hours`, the contribution is
+`duration_hours * sum(energy_cost_rate * p_injected_w) / 1000`.
+The interval belongs to the calculation, not the network's dataset version.
+These choices follow the coordinated
+[source and objective discussion](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/36)
+and [data-field proposal](https://github.com/distribution-system-opt/bmopf-resources/pull/21).
+
+The deprecated `cost` spelling remains accepted with its stated per-phase
+ordering. For a voltage source it expands to terminal order with zero at
+nonphase terminals. Supplying both names requires equal rates after that
+expansion. Fresh draft BMOPF 0.2 output uses `energy_cost_rate`. Explicit 0.1.0
+output uses generator `cost` and preserves source prices in the documented
+`extras.voltage_source` overlay, because that schema has no source-price field.
+A generic 0.1.0 consumer must not assume that it has loaded those prices.
