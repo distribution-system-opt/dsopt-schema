@@ -1,0 +1,15 @@
+{
+  "examples/0.2.0/example_enwl_n1_f2.json": {
+    "sha256": "24d2c054b70b5e09d179f785cb09ff90cddbf73c859756154e9eb604782b69f1",
+    "findings": [
+      [
+        "BMOPF.REFERENCE",
+        "/bus/sourcebus/perfectly_grounded_terminals"
+      ]
+    ]
+  },
+  "examples/0.2.0/example_features.json": {
+    "sha256": "e804c579e7448371c777d2ad8760b0db1e9c9c3e7723a4ff5561a0975f5c2703",
+    "findings": []
+  }
+}
