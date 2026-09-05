@@ -4,26 +4,30 @@ BMOPF gives distribution-system datasets a shared, explicit description of
 conductors, equipment and operating limits. This repository accompanies the
 [Task Force's mathematical and data-model specification](https://github.com/distribution-system-opt/math-and-data-model-specifications).
 
-**This branch proposes BMOPF 0.2.0. It is not a ratified release.** PowerIO
-v0.11.0 is preparing support for draft BMOPF 0.2, building on
-[Matt Deakin's source/objective proposal](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/36). Shipping
-an implementation does not determine the Task Force's modelling decisions.
-Feedback on those decisions and on interoperability is welcome.
-[Alignment with existing proposals](docs/upstream-alignment.md) distinguishes
-Matt's definitions, additive compatibility work and unresolved questions.
+**This branch proposes a versioned BMOPF v0.2.0, subject to Task Force approval.**
+It brings together the community's schema and specification work since v0.1.0,
+including [Matt Deakin's source and objective proposal](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/36).
+Findings from developing a reference implementation in PowerIO v0.11.0 provide
+additional examples, compatibility checks and questions for review.
 
-## What the proposal adds
+The [contribution record](docs/contributors.md) credits the work this proposal
+builds on. [Alignment with existing proposals](docs/upstream-alignment.md)
+identifies adopted definitions, additional findings and open questions.
 
-The proposal describes regulator taps, winding neutral impedances, transformer
-magnetizing terms with an explicit coil location and n-winding equipment, together with inverter controls,
-line construction provenance, DC data and named time profiles. It also makes
-units and conductor ordering explicit and fills missing cost fields referenced
-by the OPF objective. [Changes and compatibility](CHANGELOG.md) explain the
-individual additions.
+## Proposed scope
+
+Alongside the current source and objective changes, this draft proposes clearer
+units, conductor ordering and validation, plus additional transformer winding,
+tap, neutral and core-shunt data. It also reconsiders inverter controls, line
+construction data, DC equipment and time-series fields explored in earlier
+Task Force drafts. Their earlier removal limited the scope of v0.1.0; their
+inclusion here is a proposal for review, not an accepted expansion of scope.
+[Changes and compatibility](CHANGELOG.md) describe the additions individually.
 
 The schema defines structure. The accompanying proposed specification supplement
 describes the intended semantics. Neither a field's presence nor successful
-parsing proves that a particular solver implements it.
+parsing proves that a particular solver implements it. PowerIO's release does
+not determine the Task Force's decisions or release schedule.
 
 ## Start with a small feeder
 
@@ -95,7 +99,7 @@ schema/bmopf/0.2.0/   proposed JSON Schema
 examples/0.2.0/       historical and authored examples
 contracts/           compatibility expectations
 tests/              structural and semantic checks
-docs/               semantics, field inventory and integration evidence
+docs/               semantics, contributor credits and validation evidence
 ```
 
 Follow [CONTRIBUTING.md](CONTRIBUTING.md) and the specification repository's

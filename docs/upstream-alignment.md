@@ -1,11 +1,13 @@
-# Additions to existing Task Force proposals
+# BMOPF v0.2.0 proposal alignment
 
-The PowerIO integration follows Matt Deakin's work. The specification follow-up
+The versioned proposal builds on the Task Force's ongoing work. The specification supplement
 is based on [PR #36](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/36),
 revision `b0ffdbe3584046d6a631bf4f9de1d049f0b3e01d`. Its component and objective
-pages provide the definitions; the integration supplement links to them.
+pages provide the definitions; the supplement links to them.
+[Contributor credits and source history](contributors.md) identify the preceding
+schema, specification and review work.
 
-| Existing work | Adopted definition | Additional PowerIO work |
+| Existing work | Adopted definition | Additional findings proposed for review |
 |---|---|---|
 | Specification #36, source and generator | Per-phase `energy_cost_rate` in $/kWh | Retain deprecated `cost` as an equal-valued alias; typed source prices and IR round trips |
 | Specification #36, objective | One-hour cost objective and injected-power convention | No alternative objective, KCL equation, feasibility relaxation or duration field |
@@ -15,17 +17,17 @@ pages provide the definitions; the integration supplement links to them.
 
 The source-price description in resources #21 says both "per-phase" and "one
 entry per terminal". The source and objective pages in #36 consistently say
-per-phase, which this integration follows. A neutral terminal therefore has no
+per-phase, which this proposal follows. A neutral terminal therefore has no
 price entry. Voltage arrays retain every source terminal. These are separate
 array dimensions and both receive tests.
 
 Terminal-role categories remain under discussion in #26 and issue #27. The
-integration preserves old `terminal_conventions` metadata and documents the
+proposal preserves old `terminal_conventions` metadata and documents the
 reader's fallback assumptions; it does not settle a new Task Force taxonomy.
 Optional IBR price data and transformer additions remain proposed extensions.
 Their preservation does not change the base source/generator objective or imply
 that every consumer implements their equations.
 
 Ratification, changes requested during review, and the eventual schema tag remain
-Task Force decisions. PowerIO v0.11.0 supports the identified draft; a later
+Task Force decisions. Findings from the PowerIO v0.11.0 reference implementation inform this review; a later
 compatible release can follow the reviewed result.
