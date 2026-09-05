@@ -24,7 +24,7 @@ establishes conformance.
 `python3 tests/field_inventory.py --check` verifies [fields.csv](fields.csv),
 which expands references into field/table paths with exact types,
 requiredness, schema defaults and descriptions (including units/order).
-Presence flags compare each field against all three structural baselines.
+Presence flags compare each field against all three structural baselines. Each row also identifies its specification chapter, reading/preservation path, explicit writer behavior, calculation limitations, validation and test evidence. Numerical evidence is identified separately from structural family coverage.
 An absent schema default is not an invented electrical default.
 
 ## Preservation, validation and calculation
@@ -88,3 +88,25 @@ baseline depends on PowerIO.jl 0.9; the coordinated compatibility follow-up
 moves its ingestion to typed 0.11 modules. Numerical comparisons must include
 independently authored BMOPF inputs and analytical expectations so shared
 PowerIO ingestion cannot conceal a common conversion error.
+
+## Independent core-shunt comparison
+
+PowerIO's `evals/validation/validate_bmopf_core_shunts.py` generates six small
+OpenDSS cases, serializes each to generation-2 IR, and emits the BMOPF proposal
+from that IR. Retained source bytes cannot bypass the writer. The comparison
+subtracts OpenDSS's no-load-off transformer `Yprim` from its no-load-on `Yprim`,
+then compares that difference with an independently assembled BMOPF coil stamp.
+
+The cases cover WYE/DELTA, DELTA/WYE, decomposed WYE/WYE, a phase-to-phase pair,
+a centre tap and four windings, including off-nominal taps. The observed maximum
+absolute discrepancy is below `7e-15 S`; the declared tolerance is
+`1e-10 S + 1e-9 * max(abs(Y_shunt))`. This establishes the exciting-branch
+location, sign, phase scaling and tap scaling. It does not certify every
+transformer's leakage network, regulator controller or OPF formulation.
+
+The implementation follows the separate exciting-branch stamp in
+[DSS C-API Transformer.pas](https://github.com/dss-extensions/dss_capi/blob/87d85c2622c8281b92255335bc7c09b11191b21d/src/PDElements/Transformer.pas).
+BMOPFTools' compatibility tests additionally materialize the explicit coil
+branch as an ordinary bus shunt, test its complex power independently, and
+retain the source object in producer provenance. Its supported legacy schema
+profile remains distinct from accepting an arbitrary proposal identifier.
