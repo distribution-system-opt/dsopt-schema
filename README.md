@@ -34,6 +34,16 @@ baseline provenance. [Examples](examples/0.1.0/README.md) are authored structura
 fixtures, not accepted benchmark cases. Known dataset or specification questions
 do not silently change the historical schema.
 
+## Proposed v0.2.0
+
+[Schema PR #2](https://github.com/distribution-system-opt/dsopt-schema/pull/2)
+builds on this baseline. Its [proposal overview](docs/proposal-0.2.0.md),
+[contributor record](docs/contributors.md), and
+[paired specification PR #39](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/39)
+describe the proposed additions and review questions. Both versions receive
+structural checks. Cross-field checks in `tests/semantics.py` apply to the
+proposal examples and do not redefine historical v0.1.0 validity.
+
 ## Contribute
 
 Corrections and proposals are welcome. Follow [CONTRIBUTING.md](CONTRIBUTING.md)

@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.2.0/bmopf.schema.json",
+    "schema_version": "0.2.0",
+    "license": "CC-BY-4.0",
+    "title": "Explicit winding-2 terminal-coil core shunt"
+  },
+  "terminal_conventions": {
+    "phase": [
+      "a"
+    ],
+    "neutral": [
+      "n"
+    ]
+  },
+  "bus": {
+    "primary": {
+      "terminal_names": [
+        "a",
+        "n"
+      ]
+    },
+    "secondary": {
+      "terminal_names": [
+        "a",
+        "n"
+      ]
+    },
+    "tertiary": {
+      "terminal_names": [
+        "a",
+        "n"
+      ]
+    }
+  },
+  "transformer": {
+    "n_winding": {
+      "t": {
+        "s_rating": 10000,
+        "windings": [
+          {
+            "bus": "primary",
+            "terminal_map": [
+              "a",
+              "n"
+            ],
+            "configuration": "WYE",
+            "v_nom": 1000,
+            "s_rating": 9000,
+            "r_winding": 2,
+            "tap_ratio": 1.02,
+            "r_neutral": 5,
+            "x_neutral": 1,
+            "i_max": 9
+          },
+          {
+            "bus": "secondary",
+            "terminal_map": [
+              "a",
+              "n"
+            ],
+            "configuration": "WYE",
+            "v_nom": 100,
+            "s_rating": 8000,
+            "r_winding": 0.03,
+            "tap_ratio": 0.98
+          },
+          {
+            "bus": "tertiary",
+            "terminal_map": [
+              "a",
+              "n"
+            ],
+            "configuration": "WYE",
+            "v_nom": 50,
+            "s_rating": 2000,
+            "r_winding": 0.01,
+            "tap_ratio": 1
+          }
+        ],
+        "x_sc": {
+          "1_2": 1.5,
+          "1_3": 2,
+          "2_3": 2.5
+        },
+        "no_load_shunt": {
+          "winding": 2,
+          "g": 0.001,
+          "b": -0.002
+        },
+        "g_no_load": 0.001
+      }
+    }
+  },
+  "voltage_source": {
+    "grid": {
+      "bus": "primary",
+      "terminal_map": [
+        "a",
+        "n"
+      ],
+      "v_magnitude": [
+        1000,
+        0
+      ],
+      "v_angle": [
+        0,
+        0
+      ]
+    }
+  }
+}
