@@ -12,9 +12,9 @@ URLs, byte digests and field paths for these inputs:
 | Input | Revision |
 |---|---|
 | Archived complete BMOPF draft | `bmopf-resources` `2e0b1cba27a279cbf430836f1cd0cb4370887109` |
-| PowerIO's legacy 0.1.0 schema | PowerIO `ca8cfcec8bdc35d083dfc91b0bb9025ac8bb7507` |
+| Historical Task Force 0.1.0 schema | `bmopf-resources` `f2e368470a5012dd264d1f5a2f867867fb926615` |
 | Initial versioned proposal | `dsopt-schema` `3632a88c972427c888db622ffc3f706dd61719b6` |
-| Accepted mathematical/data specification | `73fae2b6bae2663d9a2e901c41a4c062457bf834` |
+| Specification main snapshot (unreleased) | `73fae2b6bae2663d9a2e901c41a4c062457bf834` |
 
 The proposal baseline and PowerIO v0.11.0's originally vendored proposal have
 identical decoded JSON content. This update therefore checks semantic and
@@ -132,3 +132,8 @@ Unresolved OpenDSS geometry deliberately blocks numerical calculation and
 canonical export. Retaining source objects is not equivalent to calculating
 conductor impedances. This distinction is covered by the PowerIO readiness and
 facade integration tests associated with contributor PR #494.
+
+The versioned import and its exact provenance are documented in the
+[baseline record](baseline-0.1.0.md). The metadata wording discrepancy is tracked
+separately in [specification #41](https://github.com/distribution-system-opt/math-and-data-model-specifications/issues/41);
+this comparison does not change the historical schema to resolve it.

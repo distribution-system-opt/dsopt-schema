@@ -22,7 +22,7 @@ tap, neutral and core-shunt data. It also reconsiders inverter controls, line
 construction data, DC equipment and time-series fields explored in earlier
 Task Force drafts. Their earlier removal limited the scope of v0.1.0; their
 inclusion here is a proposal for review, not an accepted expansion of scope.
-[Changes and compatibility](CHANGELOG.md) describe the additions individually.
+[Changes and compatibility](../CHANGELOG.md) describe the additions individually.
 
 The schema defines structure. The accompanying proposed specification supplement
 describes the intended semantics. Neither a field's presence nor successful
