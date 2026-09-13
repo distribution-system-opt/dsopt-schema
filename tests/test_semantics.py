@@ -10,9 +10,17 @@ from semantics import validate
 ROOT = Path(__file__).resolve().parent.parent
 
 
-class SemanticContract(unittest.TestCase):
+class ProposalSemantics(unittest.TestCase):
     def setUp(self):
         self.case = json.loads((ROOT / "examples/0.2.0/worked_feeder.json").read_text())
+
+    def test_proposal_examples_match_recorded_findings(self):
+        historical = json.loads((ROOT / "contracts/historical.json").read_text())
+        for path in sorted((ROOT / "examples/0.2.0").glob("*.json")):
+            name = path.relative_to(ROOT).as_posix()
+            expected = historical.get(name, {}).get("findings", [])
+            actual = [[f.code, f.path] for f in validate(json.loads(path.read_text()))]
+            self.assertEqual(actual, expected, name)
 
     def test_worked_example(self):
         self.assertEqual(validate(self.case), [])

@@ -1,4 +1,4 @@
-name: Validate proposal
+name: Validate schemas
 on:
   push:
   pull_request:

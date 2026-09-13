@@ -585,7 +585,7 @@
     ]
   },
   "proposal_baseline": {
-    "source": "https://github.com/distribution-system-opt/dsopt-schema/blob/f9e0802bf1d510abaa97a5731ce14c3eb3373e6d/schema/bmopf/0.2.0/bmopf.schema.json",
+    "source": "https://github.com/distribution-system-opt/dsopt-schema/blob/3632a88c972427c888db622ffc3f706dd61719b6/schema/bmopf/0.2.0/bmopf.schema.json",
     "sha256": "2744afb88a036783a6d22f5e830fe254321a6a68e203d31c6ff2e084d27b20cc",
     "fields": [
       "bus",

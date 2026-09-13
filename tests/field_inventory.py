@@ -62,7 +62,7 @@ def implementation(path):
         compute = "Typed preservation; solving control laws, filter equations and coupled DC physics requires a capable consumer"
     if ".no_load_shunt" in path:
         read = "Complete explicit coil-shunt object retained in transformer extras and generation-2 IR"
-        compute = "PowerIO passive matrix rejects nonzero core shunts; BMOPFTools materializes an equivalent bus shunt without moving it across leakage"
+        compute = "PowerIO passive matrix rejects nonzero core shunts; a capable consumer must implement the stated coil branch"
     if family == "bus" and path.endswith((".v_min", ".v_max")):
         read = "Unequal phase bounds retained as ordered vectors; a scalar update explicitly overrides the vector"
         compute = "Balanced lowering rejects unequal phase limits; ABI 7 and Julia expose the ordered phase vectors"
@@ -84,7 +84,7 @@ def implementation(path):
         validation = "Schema metadata shape and consistent schema identifiers; free-form extras/provenance do not undergo equipment traversal"
     evidence = "PowerIO powerio-dist/tests/bmopf.rs: schema_fields_survive_a_round_trip_without_wrong_warnings; every_dist_fixture_emits_valid_bmopf"
     if ".no_load_shunt" in path:
-        evidence = "PowerIO no_load_shunt_preserves_winding_units_and_tap_after_conversion; evals/validation/validate_bmopf_core_shunts.py; BMOPFTools test/powerio_v09_tests.jl"
+        evidence = "PowerIO no_load_shunt_preserves_winding_units_and_tap_after_conversion; evals/validation/validate_bmopf_core_shunts.py"
     elif family == "bus" and path.endswith((".v_min", ".v_max")):
         evidence = "PowerIO nonuniform_phase_bounds_survive_value_serialization_and_emission; facade IR tests; C ABI/Julia phase-view tests"
     elif family in {"meta", "extras"}:
@@ -92,7 +92,7 @@ def implementation(path):
     elif retained:
         evidence = "Structural example_features.json; family preservation tests in PowerIO bmopf.rs; no field-specific numerical certification"
     elif family == "transformer":
-        evidence = "PowerIO bmopf.rs transformer/regulator/n_winding mutation and conversion regressions; BMOPFTools test/powerio_v09_tests.jl; numerical support remains formulation-specific"
+        evidence = "PowerIO bmopf.rs transformer/regulator/n_winding mutation and conversion regressions; numerical support remains formulation-specific"
     return [reference, read, preservation, emission, compute, validation, evidence, reader, writer]
 
 def render():

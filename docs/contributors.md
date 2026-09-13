@@ -11,7 +11,7 @@ subject to Task Force approval.
 The public repositories have no `schema-v0.1.0` release tag. The comparison starts
 with Frederik Geth's [10 July 2026 commit identifying schema v0.1.0](https://github.com/distribution-system-opt/bmopf-resources/commit/1017e6aebc1307b5c96c3e0d5dea67fb8d5b8b91),
 then follows the schema and specification histories, including merged changes
-and the open proposals listed below, through 5 September 2026. Earlier
+and the open proposals listed below, through 13 September 2026. Earlier
 foundational work is credited where later changes reuse it. The specification
 PDF's version is separate from the JSON Schema version.
 
@@ -48,3 +48,21 @@ who has helped develop BMOPF.
 The linked commits preserve their original author and co-author records.
 These acknowledgments describe recorded contributions; new modelling choices
 remain open for review. Corrections and additional attribution are welcome.
+
+## Versioned baseline and contribution process
+
+The [v0.1.0 baseline record](baseline-0.1.0.md) identifies the imported source
+and the work by Matt, Frederik, and Samuel that it carries forward. The proposal
+is reviewed above that baseline; importing it does not reopen the historical
+scope decisions or imply that proposed extensions were already accepted.
+
+The repository contribution process follows Matt's
+[specification guide and PR template](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/3).
+Its revision history records responses to Marta Vanin, Naeem Turner-Bandele,
+Rahul Gupta, Tomislav Antic, Frederik Geth, and Amritanshu Pandey. Those review
+contributions remain distinct from authorship of any particular schema field.
+
+Human co-author trailers identify incorporated or adapted authored work in
+individual commits. PR descriptions separately credit discussion, review, and
+coordination and link the relevant contributions. Neither form of credit
+implies endorsement of unresolved proposals.

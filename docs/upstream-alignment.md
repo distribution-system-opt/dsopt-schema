@@ -31,3 +31,9 @@ that every consumer implements their equations.
 Ratification, changes requested during review, and the eventual schema tag remain
 Task Force decisions. Findings from the PowerIO v0.11.0 reference implementation inform this review; a later
 compatible release can follow the reviewed result.
+
+Energy-price names and units remain under review in the existing
+[source/objective discussion](https://github.com/distribution-system-opt/math-and-data-model-specifications/issues/17)
+and [paired schema discussion](https://github.com/distribution-system-opt/bmopf-resources/pull/21).
+Following the current proposed spelling does not assert consensus on the final
+units or close those discussions.

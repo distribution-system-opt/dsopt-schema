@@ -2,7 +2,7 @@
 
 This packet supports Task Force review of a versioned BMOPF v0.2.0. It records
 findings from developing a reference implementation in PowerIO v0.11.0 and
-comparisons with BMOPFTools and OpenDSS. Ratification remains a Task Force decision.
+direct comparisons with OpenDSS. Ratification remains a Task Force decision.
 
 ## Frozen comparison inputs
 
@@ -13,9 +13,8 @@ URLs, byte digests and field paths for these inputs:
 |---|---|
 | Archived complete BMOPF draft | `bmopf-resources` `2e0b1cba27a279cbf430836f1cd0cb4370887109` |
 | PowerIO's legacy 0.1.0 schema | PowerIO `ca8cfcec8bdc35d083dfc91b0bb9025ac8bb7507` |
-| Initial versioned proposal | `dsopt-schema` `f9e0802bf1d510abaa97a5731ce14c3eb3373e6d` |
+| Initial versioned proposal | `dsopt-schema` `3632a88c972427c888db622ffc3f706dd61719b6` |
 | Accepted mathematical/data specification | `73fae2b6bae2663d9a2e901c41a4c062457bf834` |
-| Public BMOPFTools comparison baseline | `4c4dafdd2b1a36541f2d1a068b01bdcc6dfcfc3a` |
 
 The proposal baseline and PowerIO v0.11.0's originally vendored proposal have
 identical decoded JSON content. This update therefore checks semantic and
@@ -30,7 +29,7 @@ An absent schema default is not an invented electrical default.
 
 ## Preservation, validation and calculation
 
-| Data | PowerIO reader / IR | Explicit writer | Computational contract and evidence |
+| Data | PowerIO reader / IR | Explicit writer | Computational support and evidence |
 |---|---|---|---|
 | Schema identifiers | Resolve known version aliases; report contradictions | Selected schema version overrides retained-source echo | Version consistency regression; producer provenance pins proposal bytes |
 | Metadata / provenance | Preserve source metadata independently of electrical tables | Keep legitimate `meta.provenance` and `extras` | Metadata is excluded from semantic equipment traversal |
@@ -84,11 +83,9 @@ and explicit schema-version tests, C ABI tests, and multiconductor matrix tests.
 must emit from changed or deserialized values as well as retained sources: a
 byte-exact echo does not test a writer's electrical conversion.
 
-BMOPFTools is publicly available and participates in the comparison. Its
-baseline depends on PowerIO.jl 0.9; the coordinated compatibility follow-up
-moves its ingestion to typed 0.11 modules. Numerical comparisons must include
-independently authored BMOPF inputs and analytical expectations so shared
-PowerIO ingestion cannot conceal a common conversion error.
+Numerical evidence must include independently authored inputs and analytical
+expectations so shared ingestion cannot conceal a common conversion error.
+Implementation comparisons inform review; they do not define Task Force scope.
 
 ## Independent core-shunt comparison
 
@@ -107,23 +104,13 @@ transformer's leakage network, regulator controller or OPF formulation.
 
 The implementation follows the separate exciting-branch stamp in
 [DSS C-API Transformer.pas](https://github.com/dss-extensions/dss_capi/blob/87d85c2622c8281b92255335bc7c09b11191b21d/src/PDElements/Transformer.pas).
-BMOPFTools' compatibility tests additionally materialize the explicit coil
-branch as an ordinary bus shunt, test its complex power independently, and
-retain the source object in `_meta.explicit_transformer_core_shunts`. Its supported legacy schema version remains distinct from accepting an arbitrary proposal identifier.
 
 ## Complete four-winding reactances
 
 PowerIO's `a84d97d97343b4175e9a846aa358997ff53b0e5f` candidate preserves all
 OpenDSS `Xscarray` pairs through its typed model, IR, BMOPF and regenerated DSS.
 The reader respects OpenDSS edit boundaries and the writer emits every pair.
-The BMOPFTools [0.11 integration tests](https://github.com/frederikgeth/BMOPFTools.jl/pull/385)
-check the six proposed `x_sc` entries against the first winding's per-coil
-impedance base. Its native four-winding DYYN power flow matches all 12 energized
-OpenDSS nodes at the existing 2 V / 0.3% tolerance, with maximum LV error below
-0.094 V. This validates that fixture and nominal taps, not arbitrary n-winding
-control models. Two reactance discrepancies leave the field-level expected-loss
-ledger; unrelated round-trip losses remain explicit.
-
+These preservation checks do not certify a general n-winding OPF formulation.
 
 ## Energy-price compatibility
 
