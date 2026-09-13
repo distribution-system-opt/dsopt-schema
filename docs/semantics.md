@@ -1,6 +1,6 @@
 # Proposed field semantics
 
-This document summarizes the proposed 0.2.0 contract. The
+This document summarizes the proposed 0.2.0 field definitions. The
 [specification supplement](https://github.com/distribution-system-opt/math-and-data-model-specifications/blob/propose-bmopf-0.2.0/docs/src/proposals/bmopf-0.2.0.md)
 contains the proposed mathematical relations. Both remain subject to Task Force
 review. The machine-readable [field inventory](fields.csv) is generated from
@@ -182,3 +182,9 @@ source-price field. A consumer must read that overlay to use the prices.
 Optional IBR prices are an additional data-preservation extension for downstream
 calculations, not a change to Matt's source/generator objective. The alignment
 record is in [upstream-alignment.md](upstream-alignment.md).
+
+Energy-price names and units remain under review in the existing
+[source/objective discussion](https://github.com/distribution-system-opt/math-and-data-model-specifications/issues/17)
+and [paired schema discussion](https://github.com/distribution-system-opt/bmopf-resources/pull/21).
+Following the current proposed spelling does not assert consensus on the final
+units or close those discussions.

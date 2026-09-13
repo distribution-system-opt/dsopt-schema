@@ -1,112 +1,55 @@
-# BMOPF data schema
+# BMOPF JSON schemas
 
-BMOPF gives distribution-system datasets a shared, explicit description of
-conductors, equipment and operating limits. This repository accompanies the
-[Task Force's mathematical and data-model specification](https://github.com/distribution-system-opt/math-and-data-model-specifications).
+This repository hosts JSON schemas for the IEEE PES Task Force on Benchmarking
+Multiconductor OPF for Distribution Systems. The accompanying
+[mathematical and data-model specification](https://github.com/distribution-system-opt/math-and-data-model-specifications)
+defines field meanings and equations. A schema validates JSON structure;
+successful validation does not establish numerical validity or acceptance as a
+Task Force network case.
 
-**This branch proposes a versioned BMOPF v0.2.0, subject to Task Force approval.**
-It brings together the community's schema and specification work since v0.1.0,
-including [Matt Deakin's source and objective proposal](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/36).
-Findings from developing a reference implementation in PowerIO v0.11.0 provide
-additional examples, compatibility checks and questions for review.
+## Historical v0.1.0 baseline
 
-The [contribution record](docs/contributors.md) credits the work this proposal
-builds on. [Alignment with existing proposals](docs/upstream-alignment.md)
-identifies adopted definitions, additional findings and open questions.
+[Schema 0.1.0](schema/bmopf/0.1.0/bmopf.schema.json) records the Task Force's
+historical schema from `bmopf-resources`. Its field definitions and validation
+rules are unchanged; only its `$id` identifies this versioned location.
+[Provenance and contributors](docs/baseline-0.1.0.md) identify the exact source,
+review history, licence, and checks. This import is not a release or a claim of
+ratification. No `schema-v0.1.0` tag accompanies it.
 
-## Proposed scope
+The `version` annotation in the schema is `0.1.0`. A dataset may identify the
+schema using `meta.$schema`; `meta.version` describes the dataset. The historical
+schema does not define `meta.schema_version`. An immutable commit URL retrieves
+a specific schema snapshot; its root `$id` supplies the canonical identity.
 
-Alongside the current source and objective changes, this draft proposes clearer
-units, conductor ordering and validation, plus additional transformer winding,
-tap, neutral and core-shunt data. It also reconsiders inverter controls, line
-construction data, DC equipment and time-series fields explored in earlier
-Task Force drafts. Their earlier removal limited the scope of v0.1.0; their
-inclusion here is a proposal for review, not an accepted expansion of scope.
-[Changes and compatibility](CHANGELOG.md) describe the additions individually.
-
-The schema defines structure. The accompanying proposed specification supplement
-describes the intended semantics. Neither a field's presence nor successful
-parsing proves that a particular solver implements it. PowerIO's release does
-not determine the Task Force's decisions or release schedule.
-
-## Start with a small feeder
-
-[worked_feeder.json](examples/0.2.0/worked_feeder.json) describes two four-terminal
-buses, a 100 m cable, a fixed voltage source and three unequal phase loads.
-
-- `terminal_names` fixes bus order as `a, b, c, n`.
-- The line maps corresponding terminals in that same order at both ends.
-- Cable resistance is 0.001 ohm/m per conductor, hence 0.1 ohm over the line.
-- The source fixes phase-to-ground magnitudes to 230 V and neutral to 0 V.
-- Load powers are 1000, 800 and 1200 W, in phase order.
-- Source energy prices are 0.10 $/kWh for each phase, with no neutral entry.
-- The load bus's minimum magnitudes are 210, 212 and 214 V. The neutral has
-  its separate 10 V cap; it does not receive a fourth phase bound.
-
-[Field semantics](docs/semantics.md) explains the less obvious conventions.
-[The field inventory](docs/fields.csv) lists every proposed field, and
-[the conformance packet](docs/conformance.md) distinguishes preserved data,
-validated data and supported calculations.
-
-## Validate structure and semantics
+## Validate a case
 
 ```sh
-python3 -m pip install jsonschema
+python3 -m pip install jsonschema==4.25.1
 python3 tests/validate.py
 python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-Structural validation checks types, required fields and permitted names.
-`tests/semantics.py` additionally checks dimensions, terminal roles, references,
-matrix indices and bounds. Historical examples keep their original content;
-known semantic findings are pinned in the tests rather than silently repaired.
-A computational consumer must perform its own capability and numerical checks
-before solving a case.
+The checks validate each schema, the small examples, rejected inputs, and exact
+baseline provenance. [Examples](examples/0.1.0/README.md) are authored structural
+fixtures, not accepted benchmark cases. Known dataset or specification questions
+do not silently change the historical schema.
 
-Unknown electrical fields are rejected. Two extension locations are deliberately
-free-form: top-level `extras` and `meta.provenance`. Existing provenance keys
-remain legitimate. A conversion that relocates required physics into `extras`
-must report that relocation; consumers cannot assume that ignoring it preserves
-the original calculation.
+## Proposed v0.2.0
 
-## Identify the draft reproducibly
+[Schema PR #2](https://github.com/distribution-system-opt/dsopt-schema/pull/2)
+builds on this baseline. Its [proposal overview](docs/proposal-0.2.0.md),
+[contributor record](docs/contributors.md), and
+[paired specification PR #39](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/39)
+describe the proposed additions and review questions. Both versions receive
+structural checks. Cross-field checks in `tests/semantics.py` apply to the
+proposal examples and do not redefine historical v0.1.0 validity.
 
-The schema's `$id` is its canonical identity. Retrieval is separate: a producer
-supporting this proposal should write an immutable raw GitHub commit URL in
-`meta.$schema`, then record the proposal commit, SHA-256 of the schema bytes and
-`status: "proposal"` in `meta.provenance`. Retrieve and verify that exact file
-rather than following a moving branch. Older canonical identifiers remain
-readable aliases, not evidence that 0.2.0 was ratified.
+## Contribute
 
-These versions answer different questions:
+Corrections and proposals are welcome. Follow [CONTRIBUTING.md](CONTRIBUTING.md)
+and the Task Force's existing review process. Proposed versions use new
+directories; released directories are immutable. Only Task Force maintainers
+ratify and release schemas with `schema-v*` tags.
 
-| Identifier | Meaning |
-|---|---|
-| `meta.version` | Dataset revision chosen by its author |
-| `meta.schema_version` | BMOPF schema version |
-| Proposal commit and schema digest | Exact reviewed proposal snapshot |
-| PowerIO v0.11.0 | Producer implementation version |
-| PowerIO IR generation 2 | PowerIO's own serialized module layout |
-| PowerIO C ABI 7 | Native binding contract |
-
-Only the Task Force releases a `schema-v0.2.0` tag. Proposed directories may
-change during review; a released schema directory is immutable.
-
-## Repository layout and contribution
-
-```text
-schema/bmopf/0.2.0/   proposed JSON Schema
-examples/0.2.0/       historical and authored examples
-contracts/           compatibility expectations
-tests/              structural and semantic checks
-docs/               semantics, contributor credits and validation evidence
-```
-
-Follow [CONTRIBUTING.md](CONTRIBUTING.md) and the specification repository's
-paired-change workflow for changes to fields or their meaning. Substantial
-mathematical explanations belong in that specification, with links here.
-
-Schema and documentation contributions use [CC BY 4.0](LICENSE). Network
-examples retain their own licences in `meta.license` or the accompanying source
-record. Cite the exact proposal commit for reproducibility, and a release tag
-once one exists.
+Schema, documentation, and authored test examples use [CC BY 4.0](LICENSE).
+Externally sourced network cases retain their own licences and attribution.

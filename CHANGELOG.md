@@ -83,15 +83,16 @@ supports required physics. Parsing or preserving a field does not establish
 that a solver models it.
 
 The worked feeder, transformer examples, field inventory and mutation/IR
-round-trip checks record the evidence and its limits. PowerIO, BMOPFTools and
+round-trip checks record the evidence and its limits. PowerIO and
 OpenDSS provide implementation comparisons; publication of any implementation
 does not ratify BMOPF.
 
-## 0.1.0
+## 0.1.0 (historical baseline, not a release)
 
-The schema identified as 0.1.0 in
-[`bmopf-resources`](https://github.com/distribution-system-opt/bmopf-resources)
-at `draft_schema_and_networks/draft_bmopf_schema.json` provides the historical
-baseline. It was not released from this repository. The
-[contribution record](docs/contributors.md) identifies the dated source history
-without treating the specification PDF's version as the JSON Schema version.
+Import the Task Force schema at `bmopf-resources` commit
+`f2e368470a5012dd264d1f5a2f867867fb926615`. Only `$id` changes to identify its
+versioned location. Field names, types, required fields, and validation rules
+remain unchanged. Add source provenance, small structural examples, and checks.
+
+The specification PDF's version is independent of this JSON Schema version.
+See [source history and credits](docs/baseline-0.1.0.md).
