@@ -50,3 +50,28 @@ separately. Network-case acceptance remains a Task Force decision.
 Small authored examples are preferred. Cite the source, revision, changes, and
 licence of reused material. Retain contributors' attribution. Contributions use
 [CC BY 4.0](LICENSE); externally sourced datasets need their own licence review.
+
+## Connecting issues, PRs, and contributors
+
+The issue forms support discrepancies, proposed changes, and questions. Blank
+issues remain available. Search existing discussions first and link related
+work; a new form does not require a duplicate issue for an existing proposal.
+Questions and editorial fixes do not need a modelling proposal or a full test
+packet.
+
+The PR template records purpose, review tier, versions, compatibility, evidence,
+dependencies, contributions, and open questions. Ordinary changes start from
+`main`. A stacked PR names its prerequisite and base branch, with an explicit
+merge order; after the prerequisite merges, retarget it to `main` and check the
+remaining diff. Paired normative PRs still need coordinated Task Force review.
+
+Use commit co-author trailers for incorporated or adapted human-authored work,
+with verified Git identities. PR descriptions separately credit review,
+discussion, and coordination, linking the actual contribution. Preserve human
+trailers in squash messages. A credit is not an assertion of endorsement or
+ratification. Corrections and additional attribution are welcome.
+
+Validation reports distinguish structure, semantic consistency, numerical
+evidence, and acceptance as a Task Force network case. If a local build is not
+possible, state why and link the CI result or preview instead of checking an
+unperformed test. CI does not replace maintainer review or case acceptance.
