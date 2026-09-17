@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.2.0/bmopf.schema.json",
+    "schema_version": "0.2.0",
+    "title": "Three-phase feeder with unequal voltage limits",
+    "license": "CC-BY-4.0",
+    "frequency": 60
+  },
+  "terminal_conventions": {
+    "phase": [
+      "a",
+      "b",
+      "c"
+    ],
+    "neutral": [
+      "n"
+    ]
+  },
+  "bus": {
+    "source": {
+      "terminal_names": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "perfectly_grounded_terminals": [
+        "n"
+      ]
+    },
+    "load": {
+      "terminal_names": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "v_min": [
+        210,
+        212,
+        214
+      ],
+      "v_max": [
+        250,
+        248,
+        246
+      ],
+      "vn_max": 10
+    }
+  },
+  "linecode": {
+    "cable": {
+      "R_series_1_1": 0.001,
+      "R_series_2_2": 0.001,
+      "R_series_3_3": 0.001,
+      "R_series_4_4": 0.001,
+      "X_series_1_1": 0.0001,
+      "X_series_2_2": 0.0001,
+      "X_series_3_3": 0.0001,
+      "X_series_4_4": 0.0001,
+      "i_max": [
+        100,
+        100,
+        100,
+        100
+      ]
+    }
+  },
+  "line": {
+    "feeder": {
+      "bus_from": "source",
+      "bus_to": "load",
+      "terminal_map_from": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "terminal_map_to": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "linecode": "cable",
+      "length": 100
+    }
+  },
+  "voltage_source": {
+    "grid": {
+      "bus": "source",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "v_magnitude": [
+        230,
+        230,
+        230,
+        0
+      ],
+      "v_angle": [
+        0,
+        -2.0943951023931953,
+        2.0943951023931953,
+        0
+      ],
+      "energy_cost_rate": [
+        0.1,
+        0.1,
+        0.1
+      ]
+    }
+  },
+  "load": {
+    "demand": {
+      "bus": "load",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "configuration": "WYE",
+      "p_nom": [
+        1000,
+        800,
+        1200
+      ],
+      "q_nom": [
+        200,
+        160,
+        240
+      ]
+    }
+  }
+}

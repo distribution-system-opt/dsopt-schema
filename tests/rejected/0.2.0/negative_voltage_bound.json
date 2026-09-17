@@ -1,0 +1,126 @@
+{
+  "name": "minimal",
+  "meta": {
+    "schema_version": "0.2.0",
+    "frequency": 50.0
+  },
+  "terminal_conventions": {
+    "phase": [
+      "a",
+      "b",
+      "c"
+    ],
+    "neutral": [
+      "n"
+    ]
+  },
+  "bus": {
+    "sourcebus": {
+      "terminal_names": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "perfectly_grounded_terminals": [
+        "n"
+      ],
+      "v_min": [
+        216.0,
+        216.0,
+        216.0
+      ],
+      "v_max": [
+        -253.0,
+        253.0,
+        253.0
+      ]
+    },
+    "b1": {
+      "terminal_names": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ]
+    }
+  },
+  "linecode": {
+    "lc": {
+      "R_series_1_1": 0.0004,
+      "X_series_1_1": 0.0003
+    }
+  },
+  "line": {
+    "l1": {
+      "bus_from": "sourcebus",
+      "bus_to": "b1",
+      "terminal_map_from": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "terminal_map_to": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "linecode": "lc",
+      "length": 100.0
+    }
+  },
+  "voltage_source": {
+    "source": {
+      "bus": "sourcebus",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "v_magnitude": [
+        240.0,
+        240.0,
+        240.0,
+        0.0
+      ],
+      "v_angle": [
+        0.0,
+        -2.0943951023931953,
+        2.0943951023931953,
+        0.0
+      ]
+    }
+  },
+  "generator": {
+    "g1": {
+      "bus": "b1",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "configuration": "WYE",
+      "cost": [
+        0.1,
+        0.1,
+        0.1
+      ]
+    }
+  },
+  "time_series": {
+    "p": {
+      "time": [
+        0.0,
+        900.0
+      ],
+      "values": [
+        1.0,
+        0.8
+      ]
+    }
+  }
+}
