@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.1.0/bmopf.schema.json",
+    "title": "Small structural example",
+    "license": "CC-BY-4.0",
+    "provenance": {
+      "example": "authored for schema validation",
+      "optional_note": null
+    }
+  },
+  "terminal_conventions": {
+    "phase": [
+      "a"
+    ],
+    "neutral": [
+      "n"
+    ]
+  },
+  "bus": {
+    "supply": {
+      "terminal_names": [
+        "a",
+        "n"
+      ],
+      "perfectly_grounded_terminals": [
+        "n"
+      ]
+    }
+  },
+  "voltage_source": {
+    "grid": {
+      "bus": "supply",
+      "terminal_map": [
+        "a",
+        "n"
+      ],
+      "v_magnitude": [
+        230,
+        0
+      ],
+      "v_angle": [
+        0,
+        0
+      ]
+    }
+  },
+  "generator": {
+    "unit": {
+      "bus": "supply",
+      "terminal_map": [
+        "a",
+        "n"
+      ],
+      "configuration": "WYE",
+      "p_min": [
+        0
+      ],
+      "p_max": [
+        1000
+      ],
+      "energy_cost_rate": [
+        0.1
+      ]
+    }
+  },
+  "load": {
+    "demand": {
+      "bus": "supply",
+      "terminal_map": [
+        "a",
+        "n"
+      ],
+      "configuration": "SINGLE_PHASE",
+      "p_nom": [
+        500
+      ],
+      "q_nom": [
+        100
+      ],
+      "model": "CONSTANT_POWER"
+    }
+  },
+  "capacitor": {
+    "bank": {
+      "bus": "supply",
+      "terminal_map": [
+        "a",
+        "n"
+      ],
+      "configuration": "SINGLE_PHASE",
+      "q_rated": 100,
+      "v_nom": 230
+    }
+  },
+  "extras": {
+    "study_note": "Structural example, not an accepted benchmark case"
+  }
+}
