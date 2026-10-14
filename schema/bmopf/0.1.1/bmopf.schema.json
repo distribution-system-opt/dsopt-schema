@@ -1,8 +1,8 @@
 {
     "$schema":"https://json-schema.org/draft/2020-12/schema",
-    "$id":"https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.1.0/bmopf.schema.json",
+    "$id":"https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.1.1/bmopf.schema.json",
     "title":"BMOPF OPF test case schema",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "type": "object",
     "additionalProperties": false,
     "properties": {
