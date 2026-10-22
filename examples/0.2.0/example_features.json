@@ -1,0 +1,793 @@
+{
+  "name": "example_0_2_0_features",
+  "meta": {
+    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.2.0/bmopf.schema.json",
+    "schema_version": "0.2.0",
+    "version": "1",
+    "title": "BMOPF 0.2.0 feature example",
+    "description": "A four-wire feeder exercising every table the 0.2.0 proposal adds. Illustrative only: it is not a benchmark network case.",
+    "license": "CC-BY-4.0",
+    "frequency": 50.0,
+    "case_study_generator": {
+      "tool": "dsopt-schema",
+      "version": "0.2.0"
+    }
+  },
+  "terminal_conventions": {
+    "phase": [
+      "a",
+      "b",
+      "c"
+    ],
+    "neutral": [
+      "n"
+    ],
+    "earth": []
+  },
+  "bus": {
+    "sourcebus": {
+      "terminal_names": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "perfectly_grounded_terminals": [
+        "n"
+      ],
+      "v_min": [
+        216.0,
+        216.0,
+        216.0
+      ],
+      "v_max": [
+        253.0,
+        253.0,
+        253.0
+      ]
+    },
+    "b1": {
+      "terminal_names": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "v_min": [
+        216.0,
+        216.0,
+        216.0
+      ],
+      "v_max": [
+        253.0,
+        253.0,
+        253.0
+      ],
+      "vn_max": 10.0,
+      "time_series": {
+        "v_max": "summer_voltage"
+      }
+    },
+    "b2": {
+      "terminal_names": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "v_min": [
+        216.0,
+        216.0,
+        216.0
+      ],
+      "v_max": [
+        253.0,
+        253.0,
+        253.0
+      ]
+    },
+    "b3": {
+      "terminal_names": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "v_min": [
+        216.0,
+        216.0,
+        216.0
+      ],
+      "v_max": [
+        253.0,
+        253.0,
+        253.0
+      ]
+    }
+  },
+  "wire_data": {
+    "al_95": {
+      "kind": "overhead",
+      "r_dc": 0.00032,
+      "temperature_ref": 20.0,
+      "alpha_20": 0.00403,
+      "radius": 0.0055,
+      "gmr": 0.00428,
+      "i_max": 240.0
+    }
+  },
+  "line_geometry": {
+    "abcn_lv": {
+      "conductors": [
+        {
+          "wire_data": "al_95",
+          "x": 0.0,
+          "y": 8.0,
+          "terminal": "a"
+        },
+        {
+          "wire_data": "al_95",
+          "x": 0.3,
+          "y": 8.0,
+          "terminal": "b"
+        },
+        {
+          "wire_data": "al_95",
+          "x": 0.6,
+          "y": 8.0,
+          "terminal": "c"
+        },
+        {
+          "wire_data": "al_95",
+          "x": 0.9,
+          "y": 8.0,
+          "terminal": "n"
+        }
+      ],
+      "earth_model": "modified_carson",
+      "earth_resistivity": 100.0,
+      "frequency": 50.0,
+      "temperature": 20.0
+    }
+  },
+  "linecode": {
+    "lc_abcn": {
+      "source": "geometry",
+      "line_geometry": "abcn_lv",
+      "derivation": {
+        "method": "modified_carson",
+        "earth_resistivity": 100.0,
+        "frequency": 50.0,
+        "temperature": 20.0,
+        "tool": "dsopt-schema",
+        "tool_version": "0.2.0"
+      },
+      "i_max": [
+        240.0,
+        240.0,
+        240.0,
+        240.0
+      ],
+      "R_series_1_1": 0.000392,
+      "R_series_1_2": 6e-05,
+      "R_series_2_2": 0.000392,
+      "R_series_3_3": 0.000392,
+      "R_series_4_4": 0.000392,
+      "X_series_1_1": 0.000314,
+      "X_series_1_2": 0.000121,
+      "X_series_2_2": 0.000314,
+      "X_series_3_3": 0.000314,
+      "X_series_4_4": 0.000314
+    }
+  },
+  "line": {
+    "l1": {
+      "bus_from": "sourcebus",
+      "bus_to": "b1",
+      "terminal_map_from": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "terminal_map_to": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "linecode": "lc_abcn",
+      "length": 120.0,
+      "i_max": [
+        200.0,
+        200.0,
+        200.0,
+        200.0
+      ]
+    },
+    "l2": {
+      "bus_from": "b2",
+      "bus_to": "b3",
+      "terminal_map_from": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "terminal_map_to": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "linecode": "lc_abcn",
+      "length": 80.0
+    }
+  },
+  "voltage_source": {
+    "source": {
+      "bus": "sourcebus",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "v_magnitude": [
+        240.0,
+        240.0,
+        240.0,
+        0.0
+      ],
+      "v_angle": [
+        0.0,
+        -2.0943951023931953,
+        2.0943951023931953,
+        0.0
+      ],
+      "cost": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "time_series": {
+        "cost": "import_price"
+      }
+    }
+  },
+  "load": {
+    "load_b1": {
+      "bus": "b1",
+      "terminal_map": [
+        "a",
+        "n"
+      ],
+      "configuration": "SINGLE_PHASE",
+      "model": "CONSTANT_POWER",
+      "p_nom": [
+        4000.0
+      ],
+      "q_nom": [
+        1300.0
+      ],
+      "v_nom": [
+        230.0
+      ],
+      "time_series": {
+        "p_nom": "house_demand",
+        "q_nom": "house_demand"
+      }
+    }
+  },
+  "generator": {
+    "gen_b3": {
+      "bus": "b3",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "configuration": "WYE",
+      "p_min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "p_max": [
+        15000.0,
+        15000.0,
+        15000.0
+      ],
+      "q_min": [
+        -5000.0,
+        -5000.0,
+        -5000.0
+      ],
+      "q_max": [
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "i_max": [
+        70.0,
+        70.0,
+        70.0,
+        70.0
+      ],
+      "cost": [
+        0.08,
+        0.08,
+        0.08
+      ]
+    }
+  },
+  "ibr": {
+    "pv_b1": {
+      "bus": "b1",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "topology": "FOUR_LEG",
+      "prime_mover": "PV",
+      "s_max": [
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "i_max": [
+        22.0,
+        22.0,
+        22.0,
+        22.0
+      ],
+      "p_avail": 12000.0,
+      "p_min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "p_max": [
+        4000.0,
+        4000.0,
+        4000.0
+      ],
+      "q_min": [
+        -3000.0,
+        -3000.0,
+        -3000.0
+      ],
+      "q_max": [
+        3000.0,
+        3000.0,
+        3000.0
+      ],
+      "r_filter": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "x_filter": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "grid_forming": false,
+      "cost": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "control_profile": "australia_vv",
+      "voltage_aggregation": "PER_PHASE",
+      "time_series": {
+        "p_avail": "pv_output"
+      }
+    },
+    "converter_b2": {
+      "bus": "b2",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "topology": "FOUR_LEG",
+      "prime_mover": "GENERIC",
+      "s_max": [
+        50000.0,
+        50000.0,
+        50000.0
+      ],
+      "dc_bus": "dcbus1",
+      "dc_terminal_map": [
+        "p",
+        "r"
+      ],
+      "dc_control": "V",
+      "dc_v_set": 800.0,
+      "dc_link_coupled": true,
+      "p_dc_min": -50000.0,
+      "p_dc_max": 50000.0
+    }
+  },
+  "control_profile": {
+    "australia_vv": {
+      "volt_var": {
+        "voltage_reference": "PN_PER_PHASE",
+        "breakpoints": [
+          207.0,
+          220.0,
+          240.0,
+          258.0
+        ],
+        "q_limits": [
+          -0.44,
+          0.44
+        ],
+        "q_unit": "VA_FRACTION",
+        "q_ref": "VAR_AVAILABLE"
+      },
+      "volt_watt": {
+        "voltage_reference": "PN_PER_PHASE",
+        "breakpoints": [
+          253.0,
+          260.0
+        ],
+        "p_limits": [
+          1.0,
+          0.2
+        ],
+        "p_unit": "VA_FRACTION",
+        "p_ref": "P_AVAILABLE"
+      }
+    }
+  },
+  "switch": {
+    "sw1": {
+      "bus_from": "b1",
+      "bus_to": "b2",
+      "terminal_map_from": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "terminal_map_to": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "open_switch": false,
+      "i_max": [
+        200.0,
+        200.0,
+        200.0,
+        200.0
+      ]
+    }
+  },
+  "transformer": {
+    "single_phase_autotransformer": {
+      "reg_b2": {
+        "bus_from": "b1",
+        "bus_to": "b2",
+        "terminal_map_from": [
+          "a",
+          "n"
+        ],
+        "terminal_map_to": [
+          "a",
+          "n"
+        ],
+        "s_rating": 50000.0,
+        "r_series_from": 0.01,
+        "x_series_from": 0.05,
+        "tap_ratio": 1.0,
+        "tap_ratio_min": 0.9,
+        "tap_ratio_max": 1.1,
+        "regulator_type": "B",
+        "i_max_from": [
+          220.0,
+          220.0
+        ],
+        "i_max_to": [
+          220.0,
+          220.0
+        ]
+      }
+    },
+    "open_delta_regulator": {
+      "reg_b3": {
+        "bus_from": "b2",
+        "bus_to": "b3",
+        "terminal_map_from": [
+          "a",
+          "b",
+          "c"
+        ],
+        "terminal_map_to": [
+          "a",
+          "b",
+          "c"
+        ],
+        "connection": "ABBC",
+        "s_rating": 150000.0,
+        "tap_ratio": [
+          1.0,
+          1.0
+        ],
+        "tap_ratio_min": [
+          0.9,
+          0.9
+        ],
+        "tap_ratio_max": [
+          1.1,
+          1.1
+        ],
+        "regulator_type": "B"
+      }
+    },
+    "n_winding": {
+      "tx_three_winding": {
+        "s_rating": 250000.0,
+        "windings": [
+          {
+            "bus": "sourcebus",
+            "terminal_map": [
+              "a",
+              "b",
+              "c"
+            ],
+            "v_nom": 11000.0,
+            "configuration": "DELTA",
+            "delta_roll": 1,
+            "r_winding": 0.5,
+            "i_max": 14.0
+          },
+          {
+            "bus": "b2",
+            "terminal_map": [
+              "a",
+              "b",
+              "c",
+              "n"
+            ],
+            "v_nom": 240.0,
+            "configuration": "WYE",
+            "r_winding": 0.002
+          },
+          {
+            "bus": "b3",
+            "terminal_map": [
+              "a",
+              "b",
+              "c",
+              "n"
+            ],
+            "v_nom": 240.0,
+            "configuration": "WYE",
+            "r_winding": 0.002
+          }
+        ],
+        "x_sc": {
+          "1_2": 4.84,
+          "1_3": 4.84,
+          "2_3": 0.0023
+        },
+        "g_no_load": 1.2e-05,
+        "b_no_load": -8e-05
+      }
+    },
+    "single_phase": {
+      "tx_service": {
+        "bus_from": "b3",
+        "bus_to": "b3",
+        "terminal_map_from": [
+          "a",
+          "n"
+        ],
+        "terminal_map_to": [
+          "a",
+          "n"
+        ],
+        "s_rating": 25000.0,
+        "v_nom_from": 240.0,
+        "v_nom_to": 240.0,
+        "r_series_from": 0.004,
+        "x_series_from": 0.012,
+        "tap_ratio": 1.025,
+        "r_neutral_to": 0.5,
+        "g_no_load": 2e-06,
+        "b_no_load": -1e-05,
+        "i_max_from": [
+          105.0,
+          105.0
+        ],
+        "i_max_to": [
+          105.0,
+          105.0
+        ]
+      }
+    }
+  },
+  "shunt": {
+    "grounding_b3": {
+      "bus": "b3",
+      "terminal_map": [
+        "n"
+      ],
+      "G_1_1": 0.05,
+      "B_1_1": 0.0
+    }
+  },
+  "capacitor": {
+    "cap_b2": {
+      "bus": "b2",
+      "terminal_map": [
+        "a",
+        "b",
+        "c",
+        "n"
+      ],
+      "configuration": "WYE",
+      "q_rated": 30000.0,
+      "v_nom": 415.0
+    }
+  },
+  "dc_bus": {
+    "dcbus1": {
+      "terminal_names": [
+        "p",
+        "r"
+      ],
+      "pole": {
+        "p": "POSITIVE",
+        "r": "METALLIC_RETURN"
+      },
+      "v_dc_nom": [
+        800.0,
+        0.0
+      ],
+      "v_dc_min": [
+        760.0,
+        -5.0
+      ],
+      "v_dc_max": [
+        840.0,
+        5.0
+      ],
+      "vdc_ln_min": 760.0,
+      "vdc_ln_max": 840.0
+    },
+    "dcbus2": {
+      "terminal_names": [
+        "p",
+        "r"
+      ],
+      "pole": {
+        "p": "POSITIVE",
+        "r": "METALLIC_RETURN"
+      },
+      "v_dc_nom": [
+        800.0,
+        0.0
+      ]
+    }
+  },
+  "dc_branch": {
+    "dcl1": {
+      "dc_bus_from": "dcbus1",
+      "dc_bus_to": "dcbus2",
+      "terminal_map_from": [
+        "p",
+        "r"
+      ],
+      "terminal_map_to": [
+        "p",
+        "r"
+      ],
+      "r": [
+        0.08,
+        0.08
+      ],
+      "i_max": [
+        80.0,
+        80.0
+      ],
+      "p_max": 50000.0
+    }
+  },
+  "dc_grounding": {
+    "dcg1": {
+      "dc_bus": "dcbus1",
+      "terminal": "r",
+      "r": 0.0
+    }
+  },
+  "dc_load": {
+    "dcload1": {
+      "dc_bus": "dcbus2",
+      "terminal_map": [
+        "p",
+        "r"
+      ],
+      "p": 8000.0
+    }
+  },
+  "dc_source": {
+    "dcpv1": {
+      "dc_bus": "dcbus2",
+      "terminal_map": [
+        "p",
+        "r"
+      ],
+      "p_min": 0.0,
+      "p_max": 20000.0,
+      "time_series": {
+        "p_max": "pv_output"
+      }
+    }
+  },
+  "time_series": {
+    "house_demand": {
+      "description": "Normalised residential demand over four steps",
+      "time": [
+        0.0,
+        900.0,
+        1800.0,
+        2700.0
+      ],
+      "values": [
+        0.4,
+        0.65,
+        1.0,
+        0.8
+      ]
+    },
+    "pv_output": {
+      "description": "Normalised photovoltaic output over four steps",
+      "time": [
+        0.0,
+        900.0,
+        1800.0,
+        2700.0
+      ],
+      "values": [
+        0.1,
+        0.55,
+        0.95,
+        0.7
+      ]
+    },
+    "import_price": {
+      "time": [
+        0.0,
+        900.0,
+        1800.0,
+        2700.0
+      ],
+      "values": [
+        1.0,
+        1.0,
+        1.4,
+        1.4
+      ]
+    },
+    "summer_voltage": {
+      "values": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "extras": {
+    "note": "The one free-form object. Data here carries no defined meaning."
+  }
+}
