@@ -9126,8 +9126,9 @@
   },
   "name": "ENWL_network_1_Feeder_2_4wire",
   "meta": {
-    "$schema": "https://github.com/frederikgeth/bmopf-report/draft_schema_and_networks",
+    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.2.0/bmopf.schema.json",
     "provenance": {
+      "historical_schema_identifier": "https://github.com/frederikgeth/bmopf-report/draft_schema_and_networks",
       "earth_terminal_routing": {
         "message": "OpenDSS earth terminal \"5\" routed to the bus neutral \"n\"; an earthed star point is grounded through the bus neutral rather than solidly.",
         "buses": [

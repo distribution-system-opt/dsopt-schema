@@ -32,8 +32,9 @@ spelling becomes canonical through this integration.
 
 ## Voltage, current and power arrays
 
-Bus `v_min`/`v_max` and `vpn_min`/`vpn_max` contain one value per phase, in bus
-terminal order with nonphase terminals omitted. Unequal entries remain unequal.
+Bus `vpg_min`/`vpg_max` (phase-to-ground, the 0.1.1 names) and `vpn_min`/`vpn_max`
+(phase-to-neutral) contain one value per phase, in bus terminal order with
+nonphase terminals omitted. Unequal entries remain unequal.
 `vn_max` separately limits neutral-to-ground magnitude. `vpp_min`/`vpp_max`
 use phase pairs, including the three-phase order `(1,2), (2,3), (3,1)`.
 Sequence constraints require their stated three-phase interpretation.
@@ -46,6 +47,16 @@ SINGLE_PHASE, and phase-pair branches for DELTA. Generator power limits and
 linear cost coefficients follow phase order. Current limits follow the
 conductor or winding-side order declared on the field, not a common voltage
 base. The schema describes the optional neutral-return generator current entry.
+
+## Geometry
+
+`bus.*.geo` is a GeoJSON Point and `line.*.geo` a GeoJSON LineString from
+`bus_from` through any bends to `bus_to`, both in the coordinate reference
+system `meta.crs` names (`EPSG:4326`, longitude then latitude, when absent). One
+system per document. Geometry is descriptive: no calculation reads it, `length`
+stays the electrical length, and a route's geodesic length need not equal it.
+A consumer that lays out a case without geometry computes its own coordinates
+and should not write them back as if they were source data.
 
 ## Transformers and regulators
 

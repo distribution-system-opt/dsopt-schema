@@ -19,8 +19,9 @@ identifies adopted definitions, additional findings and open questions.
 Alongside the current source and objective changes, this draft proposes clearer
 units, conductor ordering and validation, plus additional transformer winding,
 tap, neutral and core-shunt data. It also reconsiders inverter controls, line
-construction data, DC equipment and time-series fields explored in earlier
-Task Force drafts. Their earlier removal limited the scope of v0.1.0; their
+construction data, DC equipment, time-series fields and element geometry
+(bus points and line routes as GeoJSON with one `meta.crs`) explored in earlier
+Task Force drafts and in BMOPFTools PR 258. Their earlier removal limited the scope of v0.1.0; their
 inclusion here is a proposal for review, not an accepted expansion of scope.
 [Changes and compatibility](../CHANGELOG.md) describe the additions individually.
 
@@ -71,12 +72,20 @@ the original calculation.
 
 ## Identify the draft reproducibly
 
-The schema's `$id` is its canonical identity. Retrieval is separate: a producer
-supporting this proposal should write an immutable raw GitHub commit URL in
-`meta.$schema`, then record the proposal commit, SHA-256 of the schema bytes and
-`status: "proposal"` in `meta.provenance`. Retrieve and verify that exact file
-rather than following a moving branch. Older canonical identifiers remain
-readable aliases, not evidence that 0.2.0 was ratified.
+The schema's `$id` is its canonical identity, and `meta.$schema` carries exactly
+that value (the schema fixes it with `const`). A consumer recognises a 0.2.0
+document by that one identifier and does not need to allow-list the places a
+producer fetched the schema from. Retrieval is separate: a producer records the
+proposal commit, the SHA-256 of the schema bytes and `status: "proposal"` in
+`meta.provenance`, and a reviewer retrieves and verifies that exact file rather
+than following a moving branch.
+
+Why this changed: PowerIO 0.11 stamped an immutable archive URL of its own in
+`meta.$schema` so the exact bytes were retrievable, and BMOPFTools allow-listed
+accepted URLs one by one. Every new producer revision then needed a new alias in
+every consumer, and documents that were valid 0.2.0 failed intake over a string
+([BMOPFTools #487](https://github.com/frederikgeth/BMOPFTools.jl/issues/487)).
+Separating identity (`meta.$schema`) from retrieval (`meta.provenance`) ends that.
 
 These versions answer different questions:
 
@@ -84,10 +93,9 @@ These versions answer different questions:
 |---|---|
 | `meta.version` | Dataset revision chosen by its author |
 | `meta.schema_version` | BMOPF schema version |
-| Proposal commit and schema digest | Exact reviewed proposal snapshot |
-| PowerIO v0.11.0 | Producer implementation version |
-| PowerIO IR generation 2 | PowerIO's own serialized module layout |
-| PowerIO C ABI 7 | Native binding interface |
+| `meta.$schema` | The schema's canonical `$id` |
+| Proposal commit and schema digest, in `meta.provenance` | Exact reviewed proposal snapshot |
+| Producer version (for example PowerIO 0.12) | Implementation that wrote the document |
 
 Only the Task Force releases a `schema-v0.2.0` tag. Proposed directories may
 change during review; a released schema directory is immutable.

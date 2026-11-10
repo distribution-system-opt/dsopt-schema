@@ -94,11 +94,11 @@ def validate(doc: dict) -> list[Finding]:
         if not set(bus.get("perfectly_grounded_terminals", [])).issubset(names):
             fail("BMOPF.REFERENCE", path + "/perfectly_grounded_terminals", "Grounded terminals must belong to the bus")
         nphase = len(phases(names))
-        for key in ("v_min", "v_max", "vpn_min", "vpn_max"):
+        for key in ("vpg_min", "vpg_max", "vpn_min", "vpn_max"):
             dimension(bus, key, nphase, path)
         for key in ("vpp_min", "vpp_max"):
             dimension(bus, key, nphase * (nphase - 1) // 2, path)
-        for lo, hi in (("v_min", "v_max"), ("vpn_min", "vpn_max"), ("vpp_min", "vpp_max")):
+        for lo, hi in (("vpg_min", "vpg_max"), ("vpn_min", "vpn_max"), ("vpp_min", "vpp_max")):
             if lo in bus and hi in bus and any(a > b for a, b in zip(bus[lo], bus[hi])):
                 fail("BMOPF.BOUNDS", path, f"{lo} exceeds {hi}")
 

@@ -30,7 +30,7 @@ class ProposalSemantics(unittest.TestCase):
         self.assertIn("BMOPF.TERMINAL_ROLE", {f.code for f in validate(self.case)})
 
     def test_phase_bounds_do_not_include_neutral(self):
-        self.case["bus"]["load"]["v_min"].append(0)
+        self.case["bus"]["load"]["vpg_min"].append(0)
         self.assertIn("BMOPF.DIMENSION", {f.code for f in validate(self.case)})
 
     def test_terminal_order_controls_dimensions(self):

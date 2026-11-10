@@ -4,7 +4,8 @@
     "schema_version": "0.2.0",
     "title": "Three-phase feeder with unequal voltage limits",
     "license": "CC-BY-4.0",
-    "frequency": 60
+    "frequency": 60,
+    "crs": "EPSG:4326"
   },
   "terminal_conventions": {
     "phase": [
@@ -26,7 +27,14 @@
       ],
       "perfectly_grounded_terminals": [
         "n"
-      ]
+      ],
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -83.743,
+          42.2808
+        ]
+      }
     },
     "load": {
       "terminal_names": [
@@ -35,17 +43,24 @@
         "c",
         "n"
       ],
-      "v_min": [
+      "vpg_min": [
         210,
         212,
         214
       ],
-      "v_max": [
+      "vpg_max": [
         250,
         248,
         246
       ],
-      "vn_max": 10
+      "vn_max": 10,
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -83.7418,
+          42.2811
+        ]
+      }
     }
   },
   "linecode": {
@@ -83,7 +98,24 @@
         "n"
       ],
       "linecode": "cable",
-      "length": 100
+      "length": 100,
+      "geo": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -83.743,
+            42.2808
+          ],
+          [
+            -83.7424,
+            42.2811
+          ],
+          [
+            -83.7418,
+            42.2811
+          ]
+        ]
+      }
     }
   },
   "voltage_source": {

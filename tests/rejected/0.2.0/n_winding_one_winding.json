@@ -25,12 +25,12 @@
       "perfectly_grounded_terminals": [
         "n"
       ],
-      "v_min": [
+      "vpg_min": [
         216.0,
         216.0,
         216.0
       ],
-      "v_max": [
+      "vpg_max": [
         253.0,
         253.0,
         253.0

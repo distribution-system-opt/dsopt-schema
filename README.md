@@ -34,10 +34,19 @@ baseline provenance. [Examples](examples/0.1.0/README.md) are authored structura
 fixtures, not accepted benchmark cases. Known dataset or specification questions
 do not silently change the historical schema.
 
+## 0.1.1
+
+[Schema 0.1.1](schema/bmopf/0.1.1/bmopf.schema.json) renames the bus
+phase-to-ground bounds to `vpg_min`/`vpg_max` after
+[specification issue #51](https://github.com/distribution-system-opt/math-and-data-model-specifications/issues/51);
+nothing else changes.
+
 ## Proposed v0.2.0
 
 [Schema PR #2](https://github.com/distribution-system-opt/dsopt-schema/pull/2)
-builds on this baseline. Its [proposal overview](docs/proposal-0.2.0.md),
+builds on 0.1.1 (it carries the `vpg_*` names, adds `geo` slots for bus points
+and line routes with `meta.crs`, and fixes `meta.$schema` to the canonical `$id`).
+Its [proposal overview](docs/proposal-0.2.0.md),
 [contributor record](docs/contributors.md), and
 [paired specification PR #39](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/39)
 describe the proposed additions and review questions. Both versions receive

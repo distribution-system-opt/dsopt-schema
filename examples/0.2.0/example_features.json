@@ -35,12 +35,12 @@
       "perfectly_grounded_terminals": [
         "n"
       ],
-      "v_min": [
+      "vpg_min": [
         216.0,
         216.0,
         216.0
       ],
-      "v_max": [
+      "vpg_max": [
         253.0,
         253.0,
         253.0
@@ -53,19 +53,19 @@
         "c",
         "n"
       ],
-      "v_min": [
+      "vpg_min": [
         216.0,
         216.0,
         216.0
       ],
-      "v_max": [
+      "vpg_max": [
         253.0,
         253.0,
         253.0
       ],
       "vn_max": 10.0,
       "time_series": {
-        "v_max": "summer_voltage"
+        "vpg_max": "summer_voltage"
       }
     },
     "b2": {
@@ -75,12 +75,12 @@
         "c",
         "n"
       ],
-      "v_min": [
+      "vpg_min": [
         216.0,
         216.0,
         216.0
       ],
-      "v_max": [
+      "vpg_max": [
         253.0,
         253.0,
         253.0
@@ -93,12 +93,12 @@
         "c",
         "n"
       ],
-      "v_min": [
+      "vpg_min": [
         216.0,
         216.0,
         216.0
       ],
-      "v_max": [
+      "vpg_max": [
         253.0,
         253.0,
         253.0
