@@ -10,6 +10,13 @@ import jsonschema
 ROOT = Path(__file__).resolve().parent.parent
 
 
+def strict_json(text: str):
+    """Parse RFC 8259 JSON: NaN, Infinity and -Infinity are not JSON numbers."""
+    def reject(token):
+        raise ValueError(f'non-finite number {token} is not JSON')
+    return json.loads(text, parse_constant=reject)
+
+
 def check_version(directory: Path) -> list[str]:
     version = directory.name
     schema = json.loads((directory / 'bmopf.schema.json').read_text())
@@ -17,21 +24,29 @@ def check_version(directory: Path) -> list[str]:
     validator_class.check_schema(schema)
     validator = validator_class(schema)
     failures = []
+    released_on_main = version in ('0.1.0', '0.1.1')
     expected_id = (
         'https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/'
-        f'main/schema/bmopf/{version}/bmopf.schema.json'
+        + ('main' if released_on_main else f'schema-v{version}')
+        + f'/schema/bmopf/{version}/bmopf.schema.json'
     )
-    if schema.get('$id') != expected_id or schema.get('version') != version:
-        failures.append(f'{version}: schema identity or version disagrees with directory')
+    if schema.get('$id') != expected_id:
+        failures.append(f'{version}: $id disagrees with directory')
+    if released_on_main and schema.get('version') != version:
+        failures.append(f'{version}: version keyword disagrees with directory')
     metadata = schema.get('properties', {}).get('meta', {}).get('properties', {})
-    if 'schema_version' in metadata and metadata['schema_version'].get('const') != version:
-        failures.append(f'{version}: meta.schema_version disagrees with directory')
+    if not released_on_main:
+        line = '.'.join(version.split('.')[:2])
+        accepts = jsonschema.Draft202012Validator(metadata.get('schema_version', {})).is_valid
+        major, minor, _ = (int(x) for x in version.split('.'))
+        if not (accepts(version) and accepts(f'{line}.7') and not accepts(f'{major}.{minor + 1}.0')):
+            failures.append(f'{version}: meta.schema_version must accept the {line} line and only it')
     for folder, expected in [('examples', True), ('tests/rejected', False)]:
         cases = sorted((ROOT / folder / version).glob('*.json'))
         if not cases:
             failures.append(f'{folder}/{version}: no cases found')
         for case in cases:
-            errors = list(validator.iter_errors(json.loads(case.read_text())))
+            errors = list(validator.iter_errors(strict_json(case.read_text())))
             label = str(case.relative_to(ROOT))
             if (not errors) != expected:
                 failures.append(f'{label}: expected structural {"acceptance" if expected else "rejection"}')

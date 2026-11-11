@@ -1,11 +1,9 @@
 {
   "meta": {
-    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.2.0/bmopf.schema.json",
     "schema_version": "0.2.0",
     "title": "Three-phase feeder with unequal voltage limits",
     "license": "CC-BY-4.0",
-    "frequency": 60,
-    "crs": "EPSG:4326"
+    "frequency": 60
   },
   "terminal_conventions": {
     "phase": [

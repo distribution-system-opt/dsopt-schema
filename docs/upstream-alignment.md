@@ -34,8 +34,8 @@ here rather than in the schema's descriptions:
 - The `geo` shape (GeoJSON Point and LineString with one `meta.crs`) follows
   BMOPFTools PR 258 and the PowerIO reference implementation, which had to carry
   positions under `extras.geojson` before a typed slot existed.
-- Fixing `meta.$schema` to the `$id` resolves BMOPFTools issue 487, where each
-  consumer allow-listed per-producer archive URLs.
+- Identifying a document by `meta.schema_version` alone resolves BMOPFTools issue
+  487, where each consumer allow-listed per-producer archive URLs.
 - The `r_dc`/`r_ac` requirement on `wire_data` (at least one, the other derived as
   `r_ac = 1.02 r_dc`) is checked by consumers such as BMOPFTools, not by the schema.
 

@@ -57,7 +57,9 @@ grounding) take a Point; without one they are drawn at their bus. Switches, ever
 transformer type and DC branches take a Point for their site or a LineString from
 their first bus to their last. Any `geo` may carry a GeoJSON `bbox` (four or six
 numbers). All of them use the coordinate reference system `meta.crs` names
-(`EPSG:4326`, longitude then latitude, when absent): one system per document. Geometry is descriptive: no calculation reads it, `length`
+(`OGC:CRS84`, WGS84 longitude then latitude, when absent): one system per document.
+Coordinates are always x then y (longitude then latitude, or easting then
+northing), whatever axis order the named authority uses. Geometry is descriptive: no calculation reads it, `length`
 stays the electrical length, and a route's geodesic length need not equal it.
 A consumer that lays out a case without geometry computes its own coordinates
 and should not write them back as if they were source data.
@@ -74,12 +76,25 @@ and should not write them back as if they were source data.
 | `g_no_load`/`b_no_load` | From-side core shunt in siemens; inductive susceptance is negative |
 | `i_max_from`/`i_max_to` | Limits on the corresponding side's currents in amperes |
 | `n_winding.windings` | Ordered windings; winding 1 establishes the reference |
-| Regulator `tap_ratio` | Regulated over source voltage ratio for both ANSI types; `regulator_type` records the A/B hardware only |
+| Regulator `voltage_ratio` | Regulated over source voltage, `bus_to` over `bus_from`, for both ANSI types; `regulator_type` records the A/B hardware only |
 
 Three-phase nameplate voltages are line-to-line quantities. Coil voltages must
 account for the winding connection; a WYE coil uses the line-to-neutral voltage.
 A single-phase or split winding follows its own stated nominal-voltage field.
 Do not apply a square-root-of-three conversion to every transformer uniformly.
+
+Two names, two directions. With `v_nom_from = v_nom_to` and an ideal winding pair:
+
+| Field | Value | Effect on the `bus_to` voltage |
+|---|---|---|
+| Two-winding `tap_ratio` (multiplies the from-side ratio) | 1.02 | lowers it to 1/1.02 of the from side |
+| Regulator `voltage_ratio` (regulated over source) | 1.02 | raises it to 1.02 times the source side |
+| `n_winding` winding `tap_ratio` (multiplies that winding's `v_nom`) | 1.02 on winding 1 | as the two-winding `tap_ratio` |
+
+`n_winding` short-circuit reactances `x_sc` and winding resistances `r_winding` are
+ohms referred to winding 1's rated coil voltage, not per unit. A two-winding
+transformer that a dedicated subtype describes uses that subtype; `n_winding`
+with two windings is for arrangements none covers, such as wye-wye.
 
 The proposal spells two-winding tap fields `tap_ratio`, `tap_ratio_min` and
 `tap_ratio_max`. PowerIO reads its earlier `tap` spellings as documented

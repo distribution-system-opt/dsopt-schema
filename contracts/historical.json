@@ -1,6 +1,6 @@
 {
  "examples/0.2.0/example_enwl_n1_f2.json": {
-  "sha256": "b5847f11d2c2750874a6295e79be8b240303c05748586e7c9d519cba51bb1d6a",
+  "sha256": "a17c83444419b80f5624f2a50349ef6ae985ca5e8eb4fce9b57f43aa31100986",
   "findings": [
    [
     "BMOPF.REFERENCE",
@@ -9,7 +9,7 @@
   ]
  },
  "examples/0.2.0/example_features.json": {
-  "sha256": "2db331e8dd816c33cab93f35fc9a946ef23c9fe7e491c6c28d5bf13037a70bd1",
+  "sha256": "fa10dfad028457040cd3cbf9fcb1c020988ef6e7bd8dfeeb15711bfd56fe5e62",
   "findings": []
  }
 }

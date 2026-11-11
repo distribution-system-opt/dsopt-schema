@@ -9126,7 +9126,7 @@
   },
   "name": "ENWL_network_1_Feeder_2_4wire",
   "meta": {
-    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.2.0/bmopf.schema.json",
+    "schema_version": "0.2.0",
     "provenance": {
       "historical_schema_identifier": "https://github.com/frederikgeth/bmopf-report/draft_schema_and_networks",
       "earth_terminal_routing": {

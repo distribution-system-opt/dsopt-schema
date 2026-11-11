@@ -1,7 +1,6 @@
 {
   "name": "example_0_2_0_features",
   "meta": {
-    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/main/schema/bmopf/0.2.0/bmopf.schema.json",
     "schema_version": "0.2.0",
     "version": "1",
     "title": "A line naming a linecode and also giving an inline X_series entry",
@@ -11,8 +10,7 @@
     "case_study_generator": {
       "tool": "dsopt-schema",
       "version": "0.2.0"
-    },
-    "crs": "EPSG:4326"
+    }
   },
   "terminal_conventions": {
     "phase": [
@@ -155,7 +153,7 @@
   },
   "wire_data": {
     "al_95": {
-      "kind": "overhead",
+      "kind": "OVERHEAD",
       "r_dc": 0.00032,
       "temperature_ref": 20.0,
       "alpha_20": 0.00403,
@@ -192,7 +190,7 @@
           "terminal": "n"
         }
       ],
-      "earth_model": "modified_carson",
+      "earth_model": "MODIFIED_CARSON",
       "earth_resistivity": 100.0,
       "frequency": 50.0,
       "temperature": 20.0
@@ -510,7 +508,7 @@
           -0.44,
           0.44
         ],
-        "q_unit": "VA_FRACTION",
+        "q_unit": "PU",
         "q_ref": "VAR_AVAILABLE"
       },
       "volt_watt": {
@@ -523,7 +521,7 @@
           0.2,
           1.0
         ],
-        "p_unit": "VA_FRACTION",
+        "p_unit": "PU",
         "p_ref": "P_AVAILABLE"
       }
     }
@@ -582,9 +580,6 @@
         "s_rating": 50000.0,
         "r_series_from": 0.01,
         "x_series_from": 0.05,
-        "tap_ratio": 1.0,
-        "tap_ratio_min": 0.9,
-        "tap_ratio_max": 1.1,
         "regulator_type": "B",
         "i_max_from": [
           220.0,
@@ -606,7 +601,10 @@
             -82.9985,
             35.0001
           ]
-        }
+        },
+        "voltage_ratio": 1.0,
+        "voltage_ratio_min": 0.9,
+        "voltage_ratio_max": 1.1
       }
     },
     "open_delta_regulator": {
@@ -625,19 +623,19 @@
         ],
         "connection": "ABBC",
         "s_rating": 150000.0,
-        "tap_ratio": [
+        "regulator_type": "B",
+        "voltage_ratio": [
           1.0,
           1.0
         ],
-        "tap_ratio_min": [
+        "voltage_ratio_min": [
           0.9,
           0.9
         ],
-        "tap_ratio_max": [
+        "voltage_ratio_max": [
           1.1,
           1.1
-        ],
-        "regulator_type": "B"
+        ]
       }
     },
     "n_winding": {

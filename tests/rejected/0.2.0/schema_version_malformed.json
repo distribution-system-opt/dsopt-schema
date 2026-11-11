@@ -1,8 +1,9 @@
 {
   "name": "minimal",
   "meta": {
-    "schema_version": "0.1.0",
-    "frequency": 50.0
+    "schema_version": "0.2",
+    "frequency": 50.0,
+    "title": "A release number without its patch component"
   },
   "terminal_conventions": {
     "phase": [

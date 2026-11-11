@@ -70,31 +70,29 @@ remain legitimate. A conversion that relocates required physics into `extras`
 must report that relocation; consumers cannot assume that ignoring it preserves
 the original calculation.
 
-## Identify the draft reproducibly
+## Identify a document
 
-The schema's `$id` is its canonical identity, and `meta.$schema` carries exactly
-that value (the schema fixes it with `const`). A consumer recognises a 0.2.0
-document by that one identifier and does not need to allow-list the places a
-producer fetched the schema from. Retrieval is separate: a producer records the
-proposal commit, the SHA-256 of the schema bytes and `status: "proposal"` in
-`meta.provenance`, and a reviewer retrieves and verifies that exact file rather
-than following a moving branch.
+A document states `meta.schema_version`, the release it was written against, and
+nothing else identifies its version. The schema accepts any 0.2.x value, so a
+0.2.0 document remains valid when 0.2.1 adds optional content, and a 0.2.1
+document that uses nothing new validates under 0.2.0. The schema's own `$id` is
+the URL of its bytes at the `schema-v0.2.0` tag; it names the schema, not the
+document. Retrieval and audit data (a draft commit, the schema digest) belong in
+`meta.provenance`.
 
-Why this changed: PowerIO 0.11 stamped an immutable archive URL of its own in
-`meta.$schema` so the exact bytes were retrievable, and BMOPFTools allow-listed
-accepted URLs one by one. Every new producer revision then needed a new alias in
-every consumer, and documents that were valid 0.2.0 failed intake over a string
-([BMOPFTools #487](https://github.com/frederikgeth/BMOPFTools.jl/issues/487)).
-Separating identity (`meta.$schema`) from retrieval (`meta.provenance`) ends that.
-
-These versions answer different questions:
+Why: PowerIO 0.11 stamped an archive URL of its own in `meta.$schema`, and
+BMOPFTools allow-listed accepted URLs one by one, so valid documents failed intake
+over a string ([BMOPFTools #487](https://github.com/frederikgeth/BMOPFTools.jl/issues/487)).
+Fixing `meta.$schema` to one URL per release would have moved the same problem to
+patch releases: a 0.2.1 schema could not accept a 0.2.0 document. A version
+string checked by a line pattern is what OpenAPI (`openapi`), glTF
+(`asset.version`), CycloneDX (`specVersion`) and CityJSON (`version`) use.
 
 | Identifier | Meaning |
 |---|---|
 | `meta.version` | Dataset revision chosen by its author |
-| `meta.schema_version` | BMOPF schema version |
-| `meta.$schema` | The schema's canonical `$id` |
-| Proposal commit and schema digest, in `meta.provenance` | Exact reviewed proposal snapshot |
+| `meta.schema_version` | BMOPF release the document was written against |
+| Draft commit and schema digest, in `meta.provenance` | Exact bytes a producer used before the tag |
 | Producer version (for example PowerIO 0.12) | Implementation that wrote the document |
 
 Only the Task Force releases a `schema-v0.2.0` tag. Proposed directories may

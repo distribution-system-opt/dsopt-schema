@@ -1,11 +1,10 @@
 {
   "meta": {
-    "$schema": "https://raw.githubusercontent.com/eigenergy/powerio/5234df55cd13ad31455697cffbdc16ca50662667/powerio-dist/schemas/bmopf/0.2.0/bmopf.schema.json",
     "schema_version": "0.2.0",
-    "title": "Three-phase feeder with unequal voltage limits",
+    "$schema": "https://raw.githubusercontent.com/distribution-system-opt/dsopt-schema/schema-v0.2.0/schema/bmopf/0.2.0/bmopf.schema.json",
+    "title": "A document stating a $schema URL; the version identifier is meta.schema_version alone",
     "license": "CC-BY-4.0",
-    "frequency": 60,
-    "crs": "EPSG:4326"
+    "frequency": 60
   },
   "terminal_conventions": {
     "phase": [

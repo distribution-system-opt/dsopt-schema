@@ -125,7 +125,7 @@
   },
   "wire_data": {
     "w1": {
-      "kind": "overhead",
+      "kind": "OVERHEAD",
       "r_dc": 0.0003,
       "radius": 0.005
     }

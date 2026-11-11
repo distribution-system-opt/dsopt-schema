@@ -70,6 +70,28 @@ that disagree with conductor order; invalid electrical references; inconsistent
 bounds; and requested physics outside a consumer's declared formulation.
 Legitimate free-form provenance is not rejected.
 
+## Semantic rules
+
+These rules are part of 0.2.x conformance (see the README). The schema cannot
+express them; `tests/semantics.py` is the reference checker and reports each
+violation with the code shown. A later 0.2.x release may add a rule only for a
+field that release adds.
+
+| Code | Rule |
+|---|---|
+| `BMOPF.TERMINAL` | Bus terminal names are non-empty and unique and never `g`; DC terminal names, grounded terminals and pole roles are consistent with the DC bus. |
+| `BMOPF.TERMINAL_ROLE` | The `terminal_conventions` role lists are unique and disjoint. Without them, `n`/`N` is the neutral, and `"4"` is the neutral when the bus terminals are exactly `1`-`4`. |
+| `BMOPF.REFERENCE` | Every named bus, terminal, linecode, control profile, wire, line geometry, DC bus, time profile and no-load-shunt winding exists; grounded terminals belong to their bus. |
+| `BMOPF.DIMENSION` | Per-phase arrays have one entry per phase terminal (neutral excluded, judged by the element's bus), per-conductor arrays one per conductor, `vpp_*` one per phase pair and needs at least two phases, and paired maps have equal length; sequence bounds need exactly three phases. |
+| `BMOPF.MATRIX` | Matrix indices stay within the conductor count, and an `n_winding` `x_sc` table states every winding pair. |
+| `BMOPF.BOUNDS` | Each `_min` does not exceed its `_max` (voltages, DC voltages, taps); a tap lies inside its bounds; control breakpoints do not decrease; Volt-Watt `p_limits` is `[p_low, p_high]`. |
+| `BMOPF.NEUTRAL` | `vng_max` and `vpn_*` appear only on a bus with a neutral terminal. |
+| `BMOPF.FREQUENCY` | A `line_geometry.frequency` or `linecode.derivation.frequency` equals `meta.frequency` when both are stated. |
+| `BMOPF.COST_ALIAS` | A generator stating both `cost` and `energy_cost_rate` states equal values. |
+| `BMOPF.AMBIGUOUS` | A transformer states its no-load admittance one way only. |
+| `BMOPF.PROFILE` | A profile reference names a field the element states numerically, and profile times strictly increase. |
+| `BMOPF.VERSION` | `meta.schema_version` is a 0.2.x release number. |
+
 ## Reproduce the schema checks
 
 ```sh

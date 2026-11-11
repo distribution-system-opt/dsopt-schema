@@ -4,6 +4,49 @@ Notable changes to the BMOPF JSON Schema.
 
 ## 0.2.0 (proposed, subject to Task Force approval)
 
+### Identity, compatibility and consistency (2026-11-11)
+
+- **One version identifier.**
+  - `meta` and `meta.schema_version` are required, and the schema accepts any 0.2.x
+    release number.
+  - `meta.$schema` is removed: a fixed URL per release made every patch release
+    reject every earlier document.
+  - The schema `$id` is the URL of its bytes at the `schema-v0.2.0` tag.
+  - The README states the versioning policy, a conformance clause and a 0.1.x
+    migration note.
+- **Coordinates.** Absent `meta.crs` means `OGC:CRS84`. Coordinates are always x
+  then y (longitude then latitude). `bbox` follows RFC 7946, including boxes across
+  the antimeridian.
+- **Names.**
+  - Every enum is UPPER_SNAKE: `wire_data.kind`, `line_geometry.earth_model` and the
+    DC control value `DROOP` were lowercase.
+  - `DSTATCOM`, a synonym of `STATCOM`, is removed.
+  - The unit token for limits stated relative to a base is `PU` (was `VA_FRACTION`,
+    which mis-stated the base when `p_ref` is `P_MAX` or `P_AVAILABLE`).
+  - The regulators' ratio is `voltage_ratio` (with `_min`/`_max`): it is the
+    regulated over source voltage, while the transformers' `tap_ratio` multiplies
+    the from-side ratio and moves the to-side voltage the other way.
+- **Constraints the descriptions stated, now enforced.**
+  - Ratings, nominal voltages, taps and ratios, wire radius and GMR, and frequencies
+    are strictly positive.
+  - A wire needs `r_dc` or `r_ac`, and `gmr` or `radius`.
+  - A voltage-dependent load needs `v_nom`, and a ZIP or exponential load its
+    coefficients.
+  - Volt-VAr `q_limits` signs are enforced.
+  - `bus` and `voltage_source` must be non-empty.
+  - The reference validator rejects `NaN` and `Infinity`.
+- **Line `s_max`.** It has one entry per conductor, as the specification and the
+  0.1.1 linecode state.
+- **Defaults.** Constant defaults use the `default` keyword. Absent DC voltage bounds
+  mean no bound. Time-series steps are independent snapshots.
+- **Descriptions.** Draft-stage and tool-specific wording is removed, and inverter
+  filter arrays are per phase.
+- **Semantic checker.**
+  - It now matches the schema text on inverter `i_max`, WYE sub-loads and the `"4"`
+    neutral.
+  - `docs/conformance.md` lists its rules.
+  - `docs/roadmap.md` separates 0.2.x from 0.3.0 work.
+
 ### Review fixes (Frederik Geth, 2026-11-11)
 
 - A line that names a `linecode` rejects every inline impedance key

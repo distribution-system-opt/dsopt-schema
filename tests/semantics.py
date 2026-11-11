@@ -36,12 +36,9 @@ def validate(doc: dict) -> list[Finding]:
         findings.append(Finding(code, path, message))
 
     meta = doc.get("meta", {})
-    identity = meta.get("$schema", "")
     version = meta.get("schema_version")
-    match = re.search(r"/(\d+\.\d+\.\d+)/", identity)
-    inferred = match[1] if match else "0.1.0" if "bmopf-report" in identity or "draft_bmopf_schema" in identity else None
-    if inferred is not None and version is not None and inferred != version:
-        fail("BMOPF.VERSION", "/meta/schema_version", "Schema identity and schema_version disagree")
+    if version is not None and not re.fullmatch(r"0\.2\.(0|[1-9][0-9]*)", str(version)):
+        fail("BMOPF.VERSION", "/meta/schema_version", "This checker implements the 0.2 line only")
 
     frequency = meta.get("frequency")
     if isinstance(frequency, (int, float)) and not isinstance(frequency, bool):
@@ -71,7 +68,7 @@ def validate(doc: dict) -> list[Finding]:
         else:
             nonphase = {"n", "N"}
             reference = set(bus_names if bus_names is not None else names)
-            if {"1", "2", "3", "4"} <= reference:
+            if reference == {"1", "2", "3", "4"}:
                 nonphase.add("4")
         return [name for name in names if name not in nonphase]
 
@@ -118,6 +115,10 @@ def validate(doc: dict) -> list[Finding]:
             fail("BMOPF.NEUTRAL", path + "/vng_max", "vng_max needs a neutral terminal on the bus")
         if nphase < 2 and any(key in bus for key in ("vpp_min", "vpp_max")):
             fail("BMOPF.DIMENSION", path, "vpp_min/vpp_max need at least two phase terminals")
+        if nphase == len(names) and any(key in bus for key in ("vpn_min", "vpn_max")):
+            fail("BMOPF.NEUTRAL", path, "vpn_min/vpn_max need a neutral terminal on the bus")
+        if nphase != 3 and any(key in bus for key in ("vpos_min", "vpos_max", "vneg_max", "vzero_max")):
+            fail("BMOPF.DIMENSION", path, "Sequence bounds need exactly three phase terminals")
         for key in ("vpp_min", "vpp_max"):
             dimension(bus, key, nphase * (nphase - 1) // 2, path)
         for lo, hi in (("vpg_min", "vpg_max"), ("vpn_min", "vpn_max"), ("vpp_min", "vpp_max")):
@@ -132,7 +133,7 @@ def validate(doc: dict) -> list[Finding]:
             dimension(line, "terminal_map_to", n, path)
             matrices(line, n, path)
             dimension(line, "i_max", n, path)
-            dimension(line, "s_max", len(phases(line.get("terminal_map_from", []), bus_terminals(line.get("bus_from")))), path)
+            dimension(line, "s_max", n, path)
             if "linecode" in line:
                 code = doc.get("linecode", {}).get(line["linecode"])
                 if code is None:
@@ -140,9 +141,9 @@ def validate(doc: dict) -> list[Finding]:
                 else:
                     matrices(code, n, path + "/linecode")
                     dimension(code, "i_max", n, path + "/linecode")
-                    dimension(code, "s_max", len(phases(line.get("terminal_map_from", []), bus_terminals(line.get("bus_from")))), path + "/linecode")
+                    dimension(code, "s_max", n, path + "/linecode")
 
-    for kind in ("load", "generator", "voltage_source", "ibr", "shunt", "capacitor", "grounding"):
+    for kind in ("load", "generator", "voltage_source", "ibr", "shunt", "capacitor"):
         for path, record in records(doc, kind):
             terminal_map(record, "bus", "terminal_map", path)
             names = record.get("terminal_map", [])
@@ -154,7 +155,7 @@ def validate(doc: dict) -> list[Finding]:
                     fail("BMOPF.COST_ALIAS", path, "cost and energy_cost_rate must agree in their declared conductor order")
             if kind == "load":
                 configuration = record.get("configuration")
-                np = 1 if configuration == "SINGLE_PHASE" else max(0, nt - 1) if configuration == "WYE" else nt * (nt - 1) // 2
+                np = 1 if configuration == "SINGLE_PHASE" else np if configuration == "WYE" else nt * (nt - 1) // 2
                 for key in ("p_nom", "q_nom", "v_nom", "alpha_p", "alpha_i", "alpha_z", "beta_p", "beta_i", "beta_z", "gamma_p", "gamma_q"):
                     dimension(record, key, np, path)
             elif kind == "voltage_source":
@@ -165,7 +166,7 @@ def validate(doc: dict) -> list[Finding]:
             elif kind in ("generator", "ibr"):
                 for key in ("p_min", "p_max", "q_min", "q_max", "s_max", "cost", "energy_cost_rate"):
                     dimension(record, key, np, path)
-                dimension(record, "i_max", (np, nt) if kind == "generator" else nt, path)
+                dimension(record, "i_max", (np, nt), path)
             matrices(record, nt, path)
             for field, table in (("control_profile", "control_profile"), ("dc_bus", "dc_bus")):
                 if field in record and record[field] not in doc.get(table, {}):
@@ -239,6 +240,10 @@ def validate(doc: dict) -> list[Finding]:
             dimension(record, "time", len(record["values"]), path)
             if any(a >= b for a,b in zip(record.get("time", []), record.get("time", [])[1:])):
                 fail("BMOPF.PROFILE", path + "/time", "Profile time must be strictly increasing")
+        if path.startswith("/control_profile/") and isinstance(record.get("breakpoints"), list):
+            points = record["breakpoints"]
+            if any(a > b for a, b in zip(points, points[1:])):
+                fail("BMOPF.BOUNDS", path + "/breakpoints", "Breakpoints must not decrease")
         if path.startswith("/control_profile/") and isinstance(record.get("p_limits"), list) and len(record["p_limits"]) == 2:
             if record["p_limits"][0] > record["p_limits"][1]:
                 fail("BMOPF.BOUNDS", path + "/p_limits", "p_limits is [p_low, p_high]: p_low must not exceed p_high")

@@ -99,11 +99,11 @@ class ProposalSemantics(unittest.TestCase):
 
     def test_source_prices_follow_phase_order(self):
         source = next(iter(self.case["voltage_source"].values()))
-        source["cost"] = [1, 2, 3]
         source["energy_cost_rate"] = [1.0, 2.0, 3.0]
         self.assertEqual(validate(self.case), [])
-        source["energy_cost_rate"][-1] = 4
-        self.assertIn("BMOPF.COST_ALIAS", {f.code for f in validate(self.case)})
+        schema = json.loads((ROOT / "schema/bmopf/0.2.0/bmopf.schema.json").read_text())
+        source["cost"] = [1.0, 2.0, 3.0]
+        self.assertFalse(jsonschema.Draft202012Validator(schema).is_valid(self.case))
         del source["cost"]
         source["energy_cost_rate"].pop()
         self.assertIn("BMOPF.DIMENSION", {f.code for f in validate(self.case)})
@@ -143,6 +143,19 @@ class ProposalSemantics(unittest.TestCase):
         for profile in case["control_profile"].values():
             if "volt_watt" in profile:
                 profile["volt_watt"]["p_limits"].reverse()
+        self.assertIn("BMOPF.BOUNDS", {f.code for f in validate(case)})
+
+    def test_phase_to_neutral_bounds_need_a_neutral(self):
+        bus = self.case["bus"]["load"]
+        bus["terminal_names"] = ["a", "b", "c"]
+        bus["vpn_max"] = [250, 250, 250]
+        self.assertIn("BMOPF.NEUTRAL", {f.code for f in validate(self.case)})
+
+    def test_breakpoints_do_not_decrease(self):
+        case = json.loads((ROOT / "examples/0.2.0/example_features.json").read_text())
+        for profile in case["control_profile"].values():
+            if "volt_var" in profile:
+                profile["volt_var"]["breakpoints"].reverse()
         self.assertIn("BMOPF.BOUNDS", {f.code for f in validate(case)})
 
     def test_historical_examples_keep_their_recorded_findings(self):
