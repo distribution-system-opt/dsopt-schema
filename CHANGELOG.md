@@ -114,9 +114,10 @@ does not ratify BMOPF.
 
 ## 0.1.1
 
-Rename bus `v_min`/`v_max` to `vpg_min`/`vpg_max` following the review in
+Rename bus `v_min`/`v_max` to `vpg_min`/`vpg_max` following Robert Ferrando's
+review in
 [specification issue #51](https://github.com/distribution-system-opt/math-and-data-model-specifications/issues/51)
-(Frederik Geth, [schema #6](https://github.com/distribution-system-opt/dsopt-schema/pull/6)).
+(Matt Deakin, [schema #6](https://github.com/distribution-system-opt/dsopt-schema/pull/6)).
 No other field changes; fixtures and rejected inputs mirror 0.1.0.
 
 ## 0.1.0 (historical baseline, not a release)
