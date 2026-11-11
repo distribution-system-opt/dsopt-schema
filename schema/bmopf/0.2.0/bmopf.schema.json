@@ -1052,23 +1052,23 @@
           },
           "dc_control": {
             "$ref": "#/$defs/dc_control_type",
-            "description": "DC-side control mode for a dc_bus-coupled converter: P (constant power, default), V (DC-voltage master holding dc_v_set), or droop (saturated V-P droop). Each connected DC island needs at least one V or droop converter, else the DC voltage is underdetermined."
+            "description": "DC-side control mode for a dc_bus-coupled converter: P (constant power, default), V (DC-voltage master holding dc_v_set), or DROOP (saturated V-P droop). Each connected DC island needs at least one V or droop converter, else the DC voltage is underdetermined."
           },
           "dc_v_set": {
             "type": "number",
-            "description": "DC-voltage setpoint [V], pole-to-return, for dc_control=V (held exactly) or droop (reference voltage). Defaults to the dc_bus pole-to-return v_dc_nom when absent."
+            "description": "DC-voltage setpoint [V], pole-to-return, for dc_control=V (held exactly) or DROOP (reference voltage). Defaults to the dc_bus pole-to-return v_dc_nom when absent."
           },
           "dc_p_ref": {
             "type": "number",
-            "description": "Droop reference active power [W] at dc_v_set (the converter's AC active power when v_dc_port = dc_v_set). Used only for dc_control=droop."
+            "description": "Droop reference active power [W] at dc_v_set (the converter's AC active power when v_dc_port = dc_v_set). Used only for dc_control=DROOP."
           },
           "dc_droop": {
             "$ref": "#/$defs/nonnegative_number",
-            "description": "Droop coefficient k [V/W] for dc_control=droop: P = dc_p_ref + (v_dc_port - dc_v_set)/k, so the converter exports more as the DC-port voltage rises, saturated at the converter power limits. Larger k = softer droop."
+            "description": "Droop coefficient k [V/W] for dc_control=DROOP: P = dc_p_ref + (v_dc_port - dc_v_set)/k, so the converter exports more as the DC-port voltage rises, saturated at the converter power limits. Larger k = softer droop."
           },
           "dc_deadband": {
             "$ref": "#/$defs/nonnegative_number",
-            "description": "Optional half-width [V] of a dead-band around dc_v_set within which the droop holds P = dc_p_ref (no response to small DC-voltage deviations). Used only for dc_control=droop."
+            "description": "Optional half-width [V] of a dead-band around dc_v_set within which the droop holds P = dc_p_ref (no response to small DC-voltage deviations). Used only for dc_control=DROOP."
           },
           "q_min": {
             "type": "array",
@@ -2469,7 +2469,11 @@
             },
             "minItems": 2,
             "maxItems": 2,
-            "description": "Voltage ratios [a1, a2] of the two regulators, each the regulated-side over source-side voltage of its leg, as `single_phase_autotransformer.voltage_ratio`. Start values when free."
+            "description": "Voltage ratios [a1, a2] of the two regulators, each the regulated-side over source-side voltage of its leg, as `single_phase_autotransformer.voltage_ratio`. Start values when free.",
+            "default": [
+              1.0,
+              1.0
+            ]
           },
           "voltage_ratio_min": {
             "type": "array",
