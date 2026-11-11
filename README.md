@@ -44,8 +44,9 @@ nothing else changes.
 ## Proposed v0.2.0
 
 [Schema PR #2](https://github.com/distribution-system-opt/dsopt-schema/pull/2)
-builds on 0.1.1 (it carries the `vpg_*` names, adds `geo` slots for bus points
-and line routes with `meta.crs`, and fixes `meta.$schema` to the canonical `$id`).
+builds on 0.1.1 (it carries the `vpg_*` names, renames `vn_max` to `vng_max`, adds
+`geo` slots for every element with a place on the map with `meta.crs`, and fixes
+`meta.$schema` to the canonical `$id`).
 Its [proposal overview](docs/proposal-0.2.0.md),
 [contributor record](docs/contributors.md), and
 [paired specification PR #39](https://github.com/distribution-system-opt/math-and-data-model-specifications/pull/39)

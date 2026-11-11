@@ -35,7 +35,7 @@ spelling becomes canonical through this integration.
 Bus `vpg_min`/`vpg_max` (phase-to-ground, the 0.1.1 names) and `vpn_min`/`vpn_max`
 (phase-to-neutral) contain one value per phase, in bus terminal order with
 nonphase terminals omitted. Unequal entries remain unequal.
-`vn_max` separately limits neutral-to-ground magnitude. `vpp_min`/`vpp_max`
+`vng_max` (named `vn_max` before 0.2.0) separately limits neutral-to-ground magnitude. `vpp_min`/`vpp_max`
 use phase pairs, including the three-phase order `(1,2), (2,3), (3,1)`.
 Sequence constraints require their stated three-phase interpretation.
 An absent bound imposes no corresponding limit.
@@ -51,9 +51,13 @@ base. The schema describes the optional neutral-return generator current entry.
 ## Geometry
 
 `bus.*.geo` is a GeoJSON Point and `line.*.geo` a GeoJSON LineString from
-`bus_from` through any bends to `bus_to`, both in the coordinate reference
-system `meta.crs` names (`EPSG:4326`, longitude then latitude, when absent). One
-system per document. Geometry is descriptive: no calculation reads it, `length`
+`bus_from` through any bends to `bus_to`. Single-bus elements (sources, loads,
+generators, inverters, shunts, capacitors, and the DC bus, load, source and
+grounding) take a Point; without one they are drawn at their bus. Switches, every
+transformer type and DC branches take a Point for their site or a LineString from
+their first bus to their last. Any `geo` may carry a GeoJSON `bbox` (four or six
+numbers). All of them use the coordinate reference system `meta.crs` names
+(`EPSG:4326`, longitude then latitude, when absent): one system per document. Geometry is descriptive: no calculation reads it, `length`
 stays the electrical length, and a route's geodesic length need not equal it.
 A consumer that lays out a case without geometry computes its own coordinates
 and should not write them back as if they were source data.

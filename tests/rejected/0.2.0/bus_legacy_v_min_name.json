@@ -48,7 +48,7 @@
         248,
         246
       ],
-      "vn_max": 10,
+      "vng_max": 10,
       "geo": {
         "type": "Point",
         "coordinates": [

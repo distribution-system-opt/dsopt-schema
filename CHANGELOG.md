@@ -4,6 +4,18 @@ Notable changes to the BMOPF JSON Schema.
 
 ## 0.2.0 (proposed, subject to Task Force approval)
 
+### Task Force review answers (2026-11-11)
+
+- `vpg_min`/`vpg_max` have one entry per phase terminal (confirmed).
+- Bus `vn_max` is renamed `vng_max`, the neutral-to-ground bound, matching the
+  `vpg` (phase-to-ground) naming. `vn_max` is rejected in 0.2.0 documents.
+- `meta.$schema` is fixed to the version's `$id` (confirmed).
+- Every element with a place on the map can carry `geo`. Sources, loads,
+  generators, inverters, shunts, capacitors, DC buses, DC loads, DC sources and
+  DC grounding take a GeoJSON Point. Switches, every transformer type and DC
+  branches take a Point (their site) or a LineString (their route between buses).
+  Every `geo` may carry a GeoJSON `bbox`. All of it is optional and descriptive.
+
 ### Reconciliation with 0.1.1, geometry and one identifier (2026-11-10)
 
 - Bus phase-to-ground bounds take the 0.1.1 names `vpg_min`/`vpg_max`
@@ -11,8 +23,8 @@ Notable changes to the BMOPF JSON Schema.
   [specification issue #51](https://github.com/distribution-system-opt/math-and-data-model-specifications/issues/51)):
   `v_min`/`v_max` was ambiguous between phase-to-ground and phase-to-neutral. The
   proposal keeps its array semantics (one entry per phase terminal, the neutral
-  bounding through `vn_max`), which differs from the 0.1.0/0.1.1 wording "one
-  entry per bus terminal"; that difference is a review question, not settled here.
+  bounding through `vng_max`), which differs from the 0.1.0/0.1.1 wording "one
+  entry per bus terminal"; the Task Force confirmed per phase terminal on 2026-11-11.
   `v_min`/`v_max` are rejected in 0.2.0 documents.
 - Geometry gets typed slots: `bus.*.geo` (GeoJSON Point), `line.*.geo` (GeoJSON
   LineString) and `meta.crs` (authority code; absent means WGS84). The fields

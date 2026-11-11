@@ -20,7 +20,7 @@ Alongside the current source and objective changes, this draft proposes clearer
 units, conductor ordering and validation, plus additional transformer winding,
 tap, neutral and core-shunt data. It also reconsiders inverter controls, line
 construction data, DC equipment, time-series fields and element geometry
-(bus points and line routes as GeoJSON with one `meta.crs`) explored in earlier
+(GeoJSON points and routes for every element with a place on the map, with one `meta.crs`) explored in earlier
 Task Force drafts and in BMOPFTools PR 258. Their earlier removal limited the scope of v0.1.0; their
 inclusion here is a proposal for review, not an accepted expansion of scope.
 [Changes and compatibility](../CHANGELOG.md) describe the additions individually.

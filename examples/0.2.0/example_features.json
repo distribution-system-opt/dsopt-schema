@@ -11,7 +11,8 @@
     "case_study_generator": {
       "tool": "dsopt-schema",
       "version": "0.2.0"
-    }
+    },
+    "crs": "EPSG:4326"
   },
   "terminal_conventions": {
     "phase": [
@@ -44,7 +45,14 @@
         253.0,
         253.0,
         253.0
-      ]
+      ],
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -83.0,
+          35.0
+        ]
+      }
     },
     "b1": {
       "terminal_names": [
@@ -63,9 +71,16 @@
         253.0,
         253.0
       ],
-      "vn_max": 10.0,
+      "vng_max": 10.0,
       "time_series": {
         "vpg_max": "summer_voltage"
+      },
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -82.999,
+          35.0
+        ]
       }
     },
     "b2": {
@@ -84,7 +99,14 @@
         253.0,
         253.0,
         253.0
-      ]
+      ],
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -82.998,
+          35.0
+        ]
+      }
     },
     "b3": {
       "terminal_names": [
@@ -102,7 +124,14 @@
         253.0,
         253.0,
         253.0
-      ]
+      ],
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -82.997,
+          35.0
+        ]
+      }
     }
   },
   "wire_data": {
@@ -203,7 +232,20 @@
         200.0,
         200.0,
         200.0
-      ]
+      ],
+      "geo": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -83.0,
+            35.0
+          ],
+          [
+            -82.999,
+            35.0
+          ]
+        ]
+      }
     },
     "l2": {
       "bus_from": "b2",
@@ -221,7 +263,20 @@
         "n"
       ],
       "linecode": "lc_abcn",
-      "length": 80.0
+      "length": 80.0,
+      "geo": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -82.998,
+            35.0
+          ],
+          [
+            -82.997,
+            35.0
+          ]
+        ]
+      }
     }
   },
   "voltage_source": {
@@ -276,6 +331,13 @@
       "time_series": {
         "p_nom": "house_demand",
         "q_nom": "house_demand"
+      },
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -82.999,
+          35.0002
+        ]
       }
     }
   },
@@ -468,7 +530,20 @@
         200.0,
         200.0,
         200.0
-      ]
+      ],
+      "geo": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -82.999,
+            35.0
+          ],
+          [
+            -82.998,
+            35.0
+          ]
+        ]
+      }
     }
   },
   "transformer": {
@@ -498,7 +573,20 @@
         "i_max_to": [
           220.0,
           220.0
-        ]
+        ],
+        "geo": {
+          "type": "Point",
+          "coordinates": [
+            -82.9985,
+            35.0001
+          ],
+          "bbox": [
+            -82.9985,
+            35.0001,
+            -82.9985,
+            35.0001
+          ]
+        }
       }
     },
     "open_delta_regulator": {
@@ -699,7 +787,14 @@
         80.0,
         80.0
       ],
-      "p_max": 50000.0
+      "p_max": 50000.0,
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -82.997,
+          35.0003
+        ]
+      }
     }
   },
   "dc_grounding": {
