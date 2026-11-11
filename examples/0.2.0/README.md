@@ -20,14 +20,21 @@ Licence: CC BY 4.0, this repository's licence.
 
 ## example_enwl_n1_f2.json
 
-Vendored unchanged from
+Vendored from
 [`distribution-system-opt/bmopf-resources`](https://github.com/distribution-system-opt/bmopf-resources)
 at commit `f2e368470a5012dd264d1f5a2f867867fb926615`, directory
-`draft_schema_and_networks/network_examples/`. sha256
-`24d2c054b70b5e09d179f785cb09ff90cddbf73c859756154e9eb604782b69f1`.
+`draft_schema_and_networks/network_examples/` (original sha256
+`24d2c054b70b5e09d179f785cb09ff90cddbf73c859756154e9eb604782b69f1`), with two
+edits: `meta.$schema` now states the 0.2.0 `$id` (the original identifier is kept
+as `meta.provenance.historical_schema_identifier`), and
+`meta.provenance.powerio_source` is a path relative to the BMOPFTools.jl
+repository instead of a local absolute path. The sha256 of the file here is
+recorded in `contracts/historical.json`.
 
 It is a 0.1.0 case, kept here to check that 0.2.0 accepts existing 0.1.0 data
-unchanged.
+once its `meta.$schema` (and `schema_version`, where present) states 0.2.0. A
+0.1.x file needs that edit to validate as 0.2.0; nothing else in this case
+changes.
 
 The data derives from the four-wire low voltage network dataset:
 Heidarihaei, Rahmatollah; Geth, Frederik; and Claeys, Sander (2024), v1, CSIRO

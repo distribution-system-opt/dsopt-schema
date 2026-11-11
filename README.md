@@ -54,6 +54,16 @@ describe the proposed additions and review questions. Both versions receive
 structural checks. Cross-field checks in `tests/semantics.py` apply to the
 proposal examples and do not redefine historical v0.1.0 validity.
 
+**Versions and identifiers.** A 0.2.0 document states `meta.$schema` equal to the
+0.2.0 `$id` and `meta.schema_version` `"0.2.0"`, and the schema fixes both with
+`const`. A 0.2.0 validator therefore rejects a 0.2.1 document, and each later
+version (patch releases included) is its own schema directory with its own `$id`.
+A 0.1.x document needs those two `meta` fields edited before it can validate as
+0.2.0, and `vn_max` renamed `vng_max` where it appears. The `$id` is a URL under
+`/main/`, which names the document's version but is not an immutable retrieval
+location: the `schema-v0.2.0` tag, or the commit and digest a producer records in
+`meta.provenance`, identifies the exact bytes.
+
 ## Contribute
 
 Corrections and proposals are welcome. Follow [CONTRIBUTING.md](CONTRIBUTING.md)

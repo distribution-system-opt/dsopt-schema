@@ -50,12 +50,13 @@ support should be inferred from a parsing or schema-validation result.
 ## Tested compatibility statement
 
 The structural suite validates the historical ENWL file, the component example
-and the authored worked feeder and transformer. Twenty-one negative files exercise structural
+and the authored worked feeder and transformer. Thirty negative 0.2.0 files exercise structural
 rejections. The semantic suite additionally exercises conflicting versions,
 role-list overlap, phase-array length, unequal end-map length, unknown references,
 oversized matrix indices, inconsistent tap bounds, DC terminal references,
 geometry-library references, complete short-circuit pair tables, and
-time-profile references and ordering.
+time-profile references and ordering, frequency consistency, `vng_max` only
+on a bus with a neutral, `vpp_*` only with two phases, and Volt-Watt limit order.
 
 The historical ENWL source bus lists terminal `5` as perfectly grounded while
 its `terminal_names` are `a,b,c,n`. Its exact bytes and this finding are pinned in
@@ -114,8 +115,8 @@ These preservation checks do not certify a general n-winding OPF formulation.
 
 ## Energy-price compatibility
 
-Draft BMOPF 0.2 accepts `energy_cost_rate` and the deprecated `cost` spelling.
-The required generator price remains required: either spelling satisfies it.
+BMOPF 0.2.0 accepts `energy_cost_rate` and, on generators only, the deprecated
+`cost` spelling. The required generator price remains required: either spelling satisfies it.
 Rates remain $/kWh; no existing coefficient receives a numerical rescaling.
 Source prices follow phase order, matching Matt Deakin's source page;
 neutral terminals have no price entry. Conflicting spellings and incorrect vector lengths are

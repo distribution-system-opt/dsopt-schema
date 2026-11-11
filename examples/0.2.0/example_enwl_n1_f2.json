@@ -9190,7 +9190,7 @@
         "line LINE45: `units` has no place in the BMOPF schema; dropped from th",
         "... warning list truncated at 4096 bytes"
       ],
-      "powerio_source": "/Users/uqfgeth/Documents/GitHub/BMOPFTools.jl/test/data/ENWL/network_1/Feeder_2/Master.dss"
+      "powerio_source": "test/data/ENWL/network_1/Feeder_2/Master.dss"
     },
     "created": "2026-07-03T22:42:55Z",
     "case_study_generator": {

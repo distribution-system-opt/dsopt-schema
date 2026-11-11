@@ -38,10 +38,20 @@ def validate(doc: dict) -> list[Finding]:
     meta = doc.get("meta", {})
     identity = meta.get("$schema", "")
     version = meta.get("schema_version")
-    match = re.search(r"/(0\.[12]\.0)/", identity)
+    match = re.search(r"/(\d+\.\d+\.\d+)/", identity)
     inferred = match[1] if match else "0.1.0" if "bmopf-report" in identity or "draft_bmopf_schema" in identity else None
     if inferred is not None and version is not None and inferred != version:
         fail("BMOPF.VERSION", "/meta/schema_version", "Schema identity and schema_version disagree")
+
+    frequency = meta.get("frequency")
+    if isinstance(frequency, (int, float)) and not isinstance(frequency, bool):
+        stated = [(f"/line_geometry/{escape(name)}/frequency", record.get("frequency"))
+                  for name, record in doc.get("line_geometry", {}).items()]
+        stated += [(f"/linecode/{escape(name)}/derivation/frequency", record.get("derivation", {}).get("frequency"))
+                   for name, record in doc.get("linecode", {}).items()]
+        for path, value in stated:
+            if isinstance(value, (int, float)) and value != frequency:
+                fail("BMOPF.FREQUENCY", path, "Frequency differs from meta.frequency")
 
     conventions = doc.get("terminal_conventions")
     if conventions is not None:
@@ -52,14 +62,22 @@ def validate(doc: dict) -> list[Finding]:
                 fail("BMOPF.TERMINAL_ROLE", f"/terminal_conventions/{role}", "Role lists must be unique and disjoint")
             seen.update(labels)
 
-    def phases(names):
+    def phases(names, bus_names=None):
+        """Phase terminals among `names`. Without terminal_conventions, terminal
+        "4" is the neutral when the bus (not the element) has terminals 1-4, so a
+        generator on ["1", "4"] of such a bus has one phase."""
         if conventions is not None:
             nonphase = set(conventions.get("neutral", []) + conventions.get("earth", []))
         else:
             nonphase = {"n", "N"}
-            if set(names) == {"1", "2", "3", "4"}:
+            reference = set(bus_names if bus_names is not None else names)
+            if {"1", "2", "3", "4"} <= reference:
                 nonphase.add("4")
         return [name for name in names if name not in nonphase]
+
+    def bus_terminals(name):
+        bus = doc.get("bus", {}).get(name)
+        return bus.get("terminal_names") if isinstance(bus, dict) else None
 
     def dimension(record, key, expected, path):
         if key in record and isinstance(record[key], list):
@@ -96,6 +114,10 @@ def validate(doc: dict) -> list[Finding]:
         nphase = len(phases(names))
         for key in ("vpg_min", "vpg_max", "vpn_min", "vpn_max"):
             dimension(bus, key, nphase, path)
+        if "vng_max" in bus and nphase == len(names):
+            fail("BMOPF.NEUTRAL", path + "/vng_max", "vng_max needs a neutral terminal on the bus")
+        if nphase < 2 and any(key in bus for key in ("vpp_min", "vpp_max")):
+            fail("BMOPF.DIMENSION", path, "vpp_min/vpp_max need at least two phase terminals")
         for key in ("vpp_min", "vpp_max"):
             dimension(bus, key, nphase * (nphase - 1) // 2, path)
         for lo, hi in (("vpg_min", "vpg_max"), ("vpn_min", "vpn_max"), ("vpp_min", "vpp_max")):
@@ -110,7 +132,7 @@ def validate(doc: dict) -> list[Finding]:
             dimension(line, "terminal_map_to", n, path)
             matrices(line, n, path)
             dimension(line, "i_max", n, path)
-            dimension(line, "s_max", len(phases(line.get("terminal_map_from", []))), path)
+            dimension(line, "s_max", len(phases(line.get("terminal_map_from", []), bus_terminals(line.get("bus_from")))), path)
             if "linecode" in line:
                 code = doc.get("linecode", {}).get(line["linecode"])
                 if code is None:
@@ -118,14 +140,14 @@ def validate(doc: dict) -> list[Finding]:
                 else:
                     matrices(code, n, path + "/linecode")
                     dimension(code, "i_max", n, path + "/linecode")
-                    dimension(code, "s_max", len(phases(line.get("terminal_map_from", []))), path + "/linecode")
+                    dimension(code, "s_max", len(phases(line.get("terminal_map_from", []), bus_terminals(line.get("bus_from")))), path + "/linecode")
 
     for kind in ("load", "generator", "voltage_source", "ibr", "shunt", "capacitor", "grounding"):
         for path, record in records(doc, kind):
             terminal_map(record, "bus", "terminal_map", path)
             names = record.get("terminal_map", [])
             nt = len(names)
-            np = len(phases(names))
+            np = len(phases(names, bus_terminals(record.get("bus"))))
             if "cost" in record and "energy_cost_rate" in record:
                 old = record["cost"]
                 if old != record["energy_cost_rate"]:
@@ -217,6 +239,9 @@ def validate(doc: dict) -> list[Finding]:
             dimension(record, "time", len(record["values"]), path)
             if any(a >= b for a,b in zip(record.get("time", []), record.get("time", [])[1:])):
                 fail("BMOPF.PROFILE", path + "/time", "Profile time must be strictly increasing")
+        if path.startswith("/control_profile/") and isinstance(record.get("p_limits"), list) and len(record["p_limits"]) == 2:
+            if record["p_limits"][0] > record["p_limits"][1]:
+                fail("BMOPF.BOUNDS", path + "/p_limits", "p_limits is [p_low, p_high]: p_low must not exceed p_high")
         if "windings" in record and "x_sc" in record:
             count = len(record["windings"])
             expected = {f"{i}_{j}" for i in range(1,count+1) for j in range(i+1,count+1)}

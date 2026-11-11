@@ -132,6 +132,25 @@
           35.0
         ]
       }
+    },
+    "b4": {
+      "terminal_names": [
+        "a",
+        "n"
+      ],
+      "vpg_min": [
+        216.0
+      ],
+      "vpg_max": [
+        253.0
+      ],
+      "geo": {
+        "type": "Point",
+        "coordinates": [
+          -82.9965,
+          35.0
+        ]
+      }
     }
   },
   "wire_data": {
@@ -300,14 +319,14 @@
         2.0943951023931953,
         0.0
       ],
-      "cost": [
+      "time_series": {
+        "energy_cost_rate": "import_price"
+      },
+      "energy_cost_rate": [
         0.25,
         0.25,
         0.25
-      ],
-      "time_series": {
-        "cost": "import_price"
-      }
+      ]
     }
   },
   "load": {
@@ -377,7 +396,7 @@
         70.0,
         70.0
       ],
-      "cost": [
+      "energy_cost_rate": [
         0.08,
         0.08,
         0.08
@@ -438,16 +457,16 @@
         0.05
       ],
       "grid_forming": false,
-      "cost": [
-        0.0,
-        0.0,
-        0.0
-      ],
       "control_profile": "australia_vv",
       "voltage_aggregation": "PER_PHASE",
       "time_series": {
         "p_avail": "pv_output"
-      }
+      },
+      "energy_cost_rate": [
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     "converter_b2": {
       "bus": "b2",
@@ -500,8 +519,8 @@
           260.0
         ],
         "p_limits": [
-          1.0,
-          0.2
+          0.2,
+          1.0
         ],
         "p_unit": "VA_FRACTION",
         "p_ref": "P_AVAILABLE"
@@ -631,11 +650,11 @@
               "b",
               "c"
             ],
-            "v_nom": 11000.0,
+            "v_nom": 415.0,
             "configuration": "DELTA",
             "delta_roll": 1,
-            "r_winding": 0.5,
-            "i_max": 14.0
+            "r_winding": 0.0007117,
+            "i_max": 347.8
           },
           {
             "bus": "b2",
@@ -663,18 +682,18 @@
           }
         ],
         "x_sc": {
-          "1_2": 4.84,
-          "1_3": 4.84,
-          "2_3": 0.0023
+          "1_2": 0.0207,
+          "1_3": 0.0207,
+          "2_3": 0.0103
         },
-        "g_no_load": 1.2e-05,
-        "b_no_load": -8e-05
+        "g_no_load": 0.00097,
+        "b_no_load": -0.00484
       }
     },
     "single_phase": {
       "tx_service": {
         "bus_from": "b3",
-        "bus_to": "b3",
+        "bus_to": "b4",
         "terminal_map_from": [
           "a",
           "n"

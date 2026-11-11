@@ -28,6 +28,17 @@ Optional IBR price data and transformer additions remain proposed extensions.
 Their preservation does not change the base source/generator objective or imply
 that every consumer implements their equations.
 
+Some choices came from tools rather than the specification, and are recorded
+here rather than in the schema's descriptions:
+
+- The `geo` shape (GeoJSON Point and LineString with one `meta.crs`) follows
+  BMOPFTools PR 258 and the PowerIO reference implementation, which had to carry
+  positions under `extras.geojson` before a typed slot existed.
+- Fixing `meta.$schema` to the `$id` resolves BMOPFTools issue 487, where each
+  consumer allow-listed per-producer archive URLs.
+- The `r_dc`/`r_ac` requirement on `wire_data` (at least one, the other derived as
+  `r_ac = 1.02 r_dc`) is checked by consumers such as BMOPFTools, not by the schema.
+
 Ratification, changes requested during review, and the eventual schema tag remain
 Task Force decisions. Findings from the PowerIO v0.11.0 reference implementation inform this review; a later
 compatible release can follow the reviewed result.

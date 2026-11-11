@@ -108,6 +108,43 @@ class ProposalSemantics(unittest.TestCase):
         source["energy_cost_rate"].pop()
         self.assertIn("BMOPF.DIMENSION", {f.code for f in validate(self.case)})
 
+    def test_neutral_bound_needs_a_neutral(self):
+        bus = self.case["bus"]["load"]
+        bus["terminal_names"] = ["a", "b", "c"]
+        bus["vng_max"] = 10
+        self.assertIn("BMOPF.NEUTRAL", {f.code for f in validate(self.case)})
+
+    def test_phase_pair_bounds_need_two_phases(self):
+        bus = self.case["bus"]["load"]
+        bus["terminal_names"] = ["a", "n"]
+        bus["vpg_min"], bus["vpg_max"] = [210], [250]
+        bus["vpp_max"] = []
+        self.assertIn("BMOPF.DIMENSION", {f.code for f in validate(self.case)})
+
+    def test_linecode_frequency_matches_meta(self):
+        self.case["linecode"]["cable"]["derivation"] = {"frequency": 50}
+        self.assertIn("BMOPF.FREQUENCY", {f.code for f in validate(self.case)})
+
+    def test_numeric_terminals_classify_the_neutral_by_bus(self):
+        case = copy.deepcopy(self.case)
+        del case["terminal_conventions"]
+        case["bus"]["load"]["terminal_names"] = ["1", "2", "3", "4"]
+        for key in ("vpg_min", "vpg_max"):
+            case["bus"]["load"][key] = case["bus"]["load"][key][:3]
+        generator = {"bus": "load", "configuration": "SINGLE_PHASE", "terminal_map": ["1", "4"],
+                     "energy_cost_rate": [0.1], "p_max": [1000.0]}
+        case["generator"] = {"g": generator}
+        codes = [(f.code, f.path) for f in validate(case)]
+        self.assertNotIn(("BMOPF.DIMENSION", "/generator/g/p_max"), codes)
+        self.assertNotIn(("BMOPF.DIMENSION", "/generator/g/energy_cost_rate"), codes)
+
+    def test_volt_watt_limits_are_ordered_by_value(self):
+        case = json.loads((ROOT / "examples/0.2.0/example_features.json").read_text())
+        for profile in case["control_profile"].values():
+            if "volt_watt" in profile:
+                profile["volt_watt"]["p_limits"].reverse()
+        self.assertIn("BMOPF.BOUNDS", {f.code for f in validate(case)})
+
     def test_historical_examples_keep_their_recorded_findings(self):
         contract = json.loads((ROOT / "contracts/historical.json").read_text())
         for name, expected in contract.items():

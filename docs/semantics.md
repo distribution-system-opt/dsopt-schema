@@ -74,7 +74,7 @@ and should not write them back as if they were source data.
 | `g_no_load`/`b_no_load` | From-side core shunt in siemens; inductive susceptance is negative |
 | `i_max_from`/`i_max_to` | Limits on the corresponding side's currents in amperes |
 | `n_winding.windings` | Ordered windings; winding 1 establishes the reference |
-| Regulator `tap_ratio` | Regulation ratio, with type A/B relation defined by its subtype |
+| Regulator `tap_ratio` | Regulated over source voltage ratio for both ANSI types; `regulator_type` records the A/B hardware only |
 
 Three-phase nameplate voltages are line-to-line quantities. Coil voltages must
 account for the winding connection; a WYE coil uses the line-to-neutral voltage.
@@ -187,12 +187,17 @@ source voltage magnitudes and angles retain full terminal order. PR #36 fixes
 the objective duration at one hour. This branch adds no duration field or
 alternative source-current equation.
 
-The integration adds a deprecated `cost` alias with the same values and phase
-order, IR and typed binding preservation, and reported legacy-schema relocation.
-Supplying both price spellings requires equal values. Fresh draft BMOPF 0.2
-output uses `energy_cost_rate`. Explicit 0.1.0 output uses generator `cost` and
-preserves source prices in `extras.voltage_source`, since that schema has no
-source-price field. A consumer must read that overlay to use the prices.
+Generators keep `cost`, their 0.1.x spelling, as a deprecated alias with the
+same values and phase order; supplying both requires equal values. Sources and
+inverters have only `energy_cost_rate`, since they had no price field before 0.2.0.
+Output uses `energy_cost_rate`.
+
+Inverter power factor is signed by direction, as in OpenDSS: `pf > 0` means
+reactive power has the same sign as active power (both injected or both absorbed),
+`pf < 0` the opposite. Volt-Watt `p_limits` is `[p_low, p_high]`, ordered by value
+like `q_limits`: `p_high` applies at or below the first breakpoint and `p_low` at or
+above the second, in watts or as a fraction of the `p_ref` base (the inverter's
+`s_max` unless `p_ref` says otherwise).
 
 Optional IBR prices are an additional data-preservation extension for downstream
 calculations, not a change to Matt's source/generator objective. The alignment

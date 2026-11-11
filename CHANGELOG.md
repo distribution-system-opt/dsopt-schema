@@ -4,6 +4,38 @@ Notable changes to the BMOPF JSON Schema.
 
 ## 0.2.0 (proposed, subject to Task Force approval)
 
+### Review fixes (Frederik Geth, 2026-11-11)
+
+- A line that names a `linecode` rejects every inline impedance key
+  (`R_series_*`, `X_series_*`, `G_from_*`, `G_to_*`, `B_from_*`, `B_to_*`), not only
+  `R_series_1_1`.
+- Inverter power factor is defined by sign, as in OpenDSS: `pf > 0` means Q has the
+  same sign as P, `pf < 0` the opposite; `pf = 0` is rejected.
+- Regulator `tap_ratio` is the regulated over source voltage ratio for both ANSI
+  types. `regulator_type` records the A/B hardware and no longer changes the ratio's
+  meaning (the undefined `n_eff` is gone).
+- Volt-Watt `p_limits` is `[p_low, p_high]`, ordered by value like `q_limits`, and a
+  VA_FRACTION limit is a fraction of the `p_ref` base (S_MAX by default).
+- The ENWL example's README and this changelog state its two edits (`$schema`, and
+  a repository-relative provenance path) and its new digest.
+- `voltage_source.cost` and `ibr.cost`, new in this proposal and already
+  deprecated, are removed; the price sign is stated on `energy_cost_rate`.
+  Generator `cost` stays as the 0.1.x alias.
+- Inverter per-phase arrays have one entry per phase conductor (three for a
+  three-wire inverter), and `dc_bus` requires `dc_terminal_map`.
+- `n_winding` takes two or more windings, WYE or DELTA only, with a non-negative
+  `x_neutral`.
+- Tool names (BMOPFTools, PowerIO) move from schema descriptions to
+  `docs/upstream-alignment.md`.
+- Semantic checks classify a numeric neutral by the bus's terminals, and add
+  frequency consistency, `vng_max` only with a neutral, `vpp_*` only with two
+  phases, and Volt-Watt limit order.
+- The feature example uses `energy_cost_rate`, its service transformer feeds a new
+  bus `b4`, and its delta winding is 415 V on the 240 V source bus.
+- The README states that the fixed `$schema` and `schema_version` make a 0.2.0
+  validator reject 0.2.1 documents, and that the `/main/` `$id` names a version
+  rather than fixed bytes.
+
 ### Task Force review answers (2026-11-11)
 
 - `vpg_min`/`vpg_max` have one entry per phase terminal (confirmed).
@@ -110,8 +142,9 @@ here does not reverse the Task Force's earlier scope decisions.
 Compatibility is checked against named inputs in the
 [conformance packet](docs/conformance.md), not asserted as a blanket superset.
 The historical ENWL example passes structural validation; semantic validation
-reports its existing reference to an undeclared grounded terminal. Its bytes
-remain unchanged.
+reports its existing reference to an undeclared grounded terminal. Its
+`meta.$schema` states the 0.2.0 `$id` (a 0.1.x file needs that edit to validate
+as 0.2.0) and its provenance path is repository-relative; nothing else changed.
 
 Intentional rejection changes include ambiguous impedance sources,
 contradictory version declarations, invalid array dimensions, unresolved
